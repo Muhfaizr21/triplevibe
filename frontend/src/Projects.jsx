@@ -1,5 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from './lib/supabase/client';
+
+const WA_NUMBER = '6281234567890';
+const API_URL = 'http://localhost:5001/api';
+
+const trackWA = async (source, projectTitle) => {
+  try {
+    await fetch(`${API_URL}/wa/track`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source, project_title: projectTitle }),
+    });
+  } catch (_) {}
+};
+
 import {
   ChevronRight,
   ExternalLink,
@@ -124,16 +138,17 @@ const ProjectModal = ({ project, onClose }) => {
                 href={project.live_url}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => trackWA('project-live-url', project.title)}
                 className="w-full py-5 bg-mn-primary text-white rounded-[1.5rem] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:-translate-y-1 transition-all shadow-xl shadow-mn-primary/20"
               >
                 Visit Live Project <ExternalLink size={18} />
               </a>
             ) : (
               <button
-                disabled
-                className="w-full py-5 bg-mn-surface text-mn-tertiary/50 rounded-[1.5rem] font-black uppercase tracking-widest flex items-center justify-center gap-3 cursor-not-allowed"
+                onClick={() => { trackWA('project-wa-consult', project.title); window.open(`https://wa.me/${WA_NUMBER}?text=Halo%20TripleVibe%2C%20saya%20tertarik%20dengan%20project%20${encodeURIComponent(project.title)}%20yang%20saya%20lihat%20di%20portofolio!`, '_blank'); }}
+                className="w-full py-5 bg-mn-primary/5 border-2 border-mn-primary text-mn-primary rounded-[1.5rem] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-mn-primary hover:text-white transition-all"
               >
-                Live Link Coming Soon
+                Tanya via WhatsApp
               </button>
             )}
           </div>

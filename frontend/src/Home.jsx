@@ -1,4 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+const WA_NUMBER = '6281234567890';
+const trackAndOpenWA = async (source = 'home') => {
+  try {
+    await fetch('http://localhost:5001/api/wa/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source }),
+    });
+  } catch (_) {}
+  window.open(`https://wa.me/${WA_NUMBER}?text=Halo%20TripleVibe%2C%20saya%20ingin%20konsultasi%20project!`, '_blank');
+};
 
 const Hero = ({ onPageChange }) => (
   <header className="relative min-h-screen flex items-center pt-24 overflow-hidden">
@@ -139,29 +151,54 @@ const CaseStudy = () => (
   </section>
 );
 
-const Testimonial = () => (
-  <section className="py-32 bg-mn-surface dark:bg-slate-900/50">
-    <div className="max-w-4xl mx-auto px-8 text-center">
-      <span className="material-symbols-outlined text-6xl text-mn-outline-variant/40 mb-8" style={{ fontVariationSettings: "'FILL' 1" }}>format_quote</span>
-      <blockquote className="text-3xl md:text-4xl font-light italic text-mn-primary dark:text-white leading-tight mb-12">
-        "Kerja sama dengan TripleVibe benar-benar luar biasa. Arsitektur sistem e-commerce kami menjadi jauh lebih modern, cepat, dan stabil. Mereka benar-benar membawa 'vibe' baru ke dalam tim teknis kami!"
-      </blockquote>
-      <div className="flex items-center justify-center gap-4">
-        <div className="w-12 h-12 rounded-full overflow-hidden">
-          <img 
-            className="w-full h-full object-cover" 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZONHzWJvND7Q35kx1YB5TIXLWFgEGap7rJMD-t7K_o1VbCatetlOKz2LSpU-M86i7a2FBfbW6NU9IyWuQaaB1yMLwFbVtUWDlsNGz-WaTp1K0FYelex2aJn3wpsRm5-0l7Tnc_fqoKPA3TpcqFTlhTXu8-7ySudfHQYqzDGa9qb2BI-G8dkjADlX4Qw_uvhI7hDy9LYsnNEqG_J8laq7q9UIK6QaR1Q2SopNsx47KPDEg6EjKMSi_OlyW-u63IMA7oxeCCZnb-GOX" 
-            alt="Raka Ardiansyah"
-          />
+const Testimonial = () => {
+  const [items, setItems] = useState([]);
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    fetch('http://localhost:5001/api/testimonials')
+      .then(r => r.json())
+      .then(data => { if (data.length) setItems(data); })
+      .catch(() => {});
+  }, []);
+
+  const t = items[idx];
+
+  if (!items.length) return null;
+
+  return (
+    <section className="py-32 bg-mn-surface dark:bg-slate-900/50">
+      <div className="max-w-4xl mx-auto px-8 text-center">
+        <span className="material-symbols-outlined text-6xl text-mn-outline-variant/40 mb-8" style={{ fontVariationSettings: "'FILL' 1" }}>format_quote</span>
+        <blockquote className="text-3xl md:text-4xl font-light italic text-mn-primary dark:text-white leading-tight mb-12">
+          "{t.message}"
+        </blockquote>
+        <div className="flex items-center justify-center gap-4 mb-6">
+          {t.client_avatar_url ? (
+            <img src={t.client_avatar_url} alt={t.client_name} className="w-12 h-12 rounded-full object-cover" />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-mn-primary/10 flex items-center justify-center font-black text-mn-primary">
+              {t.client_name[0]}
+            </div>
+          )}
+          <div className="text-left">
+            <div className="font-bold text-mn-primary dark:text-white">{t.client_name}</div>
+            <div className="text-xs text-mn-secondary uppercase tracking-widest">{t.client_title}</div>
+          </div>
         </div>
-        <div className="text-left">
-          <div className="font-bold text-mn-primary dark:text-white">Raka Ardiansyah</div>
-          <div className="text-xs text-mn-secondary uppercase tracking-widest">IT Student, Jakarta</div>
-        </div>
+        {items.length > 1 && (
+          <div className="flex justify-center gap-2 mt-2">
+            {items.map((_, i) => (
+              <button key={i} onClick={() => setIdx(i)}
+                className={`w-2 h-2 rounded-full transition-all ${i === idx ? 'bg-mn-primary w-6' : 'bg-mn-primary/20'}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const CTA = ({ onPageChange }) => (
   <section className="py-24 bg-white dark:bg-mn-primary">
@@ -172,10 +209,10 @@ const CTA = ({ onPageChange }) => (
         </div>
         <div className="relative z-10 text-white">
           <h2 className="text-4xl lg:text-6xl font-black tracking-tighter mb-8">Siap Memulai Proyek Anda?</h2>
-          <p className="text-slate-400 max-w-xl mx-auto mb-12 text-lg">Konsultasikan kebutuhan teknis Anda secara gratis hari ini. Kami siap menghadirkan solusi monolith yang kokoh.</p>
+          <p className="text-slate-400 max-w-xl mx-auto mb-12 text-lg">Konsultasikan kebutuhan teknis Anda secara gratis hari ini. Kami siap menghadirkan solusi yang tepat sasaran.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-6">
-            <button onClick={() => onPageChange('contact')} className="bg-white text-mn-primary px-12 py-5 rounded-2xl font-black text-lg shadow-xl hover:-translate-y-1 transition-all">Hubungi via WhatsApp</button>
-            <button onClick={() => onPageChange('projects')} className="bg-white/10 text-white backdrop-blur-md border border-white/20 px-12 py-5 rounded-2xl font-black text-lg hover:bg-white/20 transition-all">Pelajari Harga</button>
+            <button onClick={() => trackAndOpenWA('home-cta-whatsapp')} className="bg-white text-mn-primary px-12 py-5 rounded-2xl font-black text-lg shadow-xl hover:-translate-y-1 transition-all">Hubungi via WhatsApp</button>
+            <button onClick={() => onPageChange('projects')} className="bg-white/10 text-white backdrop-blur-md border border-white/20 px-12 py-5 rounded-2xl font-black text-lg hover:bg-white/20 transition-all">Lihat Portfolio</button>
           </div>
         </div>
       </div>

@@ -6,7 +6,9 @@ import {
   BarChart3, 
   Settings, 
   HelpCircle,
-  LogOut 
+  LogOut,
+  MessageSquareQuote,
+  ImageIcon,
 } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 
@@ -33,19 +35,24 @@ const Sidebar = ({ activeTab, onTabChange }) => {
 
   const menuItems = [
     { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
-    { id: 'users', label: 'Users', icon: Users },
     { id: 'projects', label: 'Projects', icon: ShoppingBag },
+    { id: 'users', label: 'Users', icon: Users },
+    { id: 'testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+    { id: 'media', label: 'Media Library', icon: ImageIcon },
     { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
     <aside className="w-72 h-screen flex flex-col bg-mn-surface border-r border-mn-primary/5 p-6 fixed left-0 top-0">
-      <div className="mb-10 px-4">
-        <h2 className="text-2xl font-black italic tracking-tighter text-mn-primary uppercase">
-          Triple<span className="text-mn-on-primary-container">Vibe</span>
-        </h2>
-        <p className="text-[10px] uppercase tracking-[0.3em] font-black text-mn-tertiary/40 mt-1">Admin Panel</p>
+      <div className="mb-10 px-4 flex items-center gap-3">
+        <img src="/triple.jpg" alt="TripleVibe" className="h-10 w-10 rounded-xl object-cover" />
+        <div>
+          <h2 className="text-xl font-black italic tracking-tighter text-mn-primary uppercase leading-none">
+            Triple<span className="text-mn-on-primary-container">Vibe</span>
+          </h2>
+          <p className="text-[10px] uppercase tracking-[0.3em] font-black text-mn-tertiary/40 mt-1">Admin Panel</p>
+        </div>
       </div>
 
       <nav className="flex-grow space-y-2">

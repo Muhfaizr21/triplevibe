@@ -1,9 +1,24 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { LogOut, User } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { LogOut, User, Moon, Sun } from 'lucide-react';
+
+const WA_NUMBER = '6281234567890'; // Ganti dengan nomor WA Anda
+
+const trackAndOpenWA = async (source = 'navbar') => {
+  try {
+    await fetch('http://localhost:5001/api/wa/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source }),
+    });
+  } catch (_) {}
+  window.open(`https://wa.me/${WA_NUMBER}?text=Halo%20TripleVibe%2C%20saya%20ingin%20konsultasi%20project!`, '_blank');
+};
 
 const Navbar = ({ currentPage, onPageChange }) => {
   const { user, isAdmin, signOut } = useAuth();
+  const { isDark, toggle } = useTheme();
 
   const navLinks = [
     { name: 'Home', id: 'home' },
@@ -56,9 +71,18 @@ const Navbar = ({ currentPage, onPageChange }) => {
         )}
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
+        {/* Dark Mode Toggle */}
+        <button
+          onClick={toggle}
+          className="p-2 text-mn-tertiary hover:text-mn-primary transition-all rounded-xl hover:bg-white/5"
+          title="Toggle Dark Mode"
+        >
+          {isDark ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
+
         {user ? (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="hidden lg:flex items-center gap-2 text-white/60 text-xs font-bold bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
               <User size={14} className="text-mn-primary" />
               {user.email.split('@')[0]}
@@ -80,7 +104,7 @@ const Navbar = ({ currentPage, onPageChange }) => {
               Log In
             </button>
             <button
-              onClick={() => onPageChange('contact')}
+              onClick={() => trackAndOpenWA('navbar-contact-btn')}
               className="bg-mn-primary text-white px-7 py-2.5 rounded-full font-black text-xs uppercase tracking-widest hover:shadow-lg hover:shadow-mn-primary/20 hover:-translate-y-0.5 active:translate-y-0 transition-all"
             >
               Contact

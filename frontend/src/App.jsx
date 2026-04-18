@@ -8,6 +8,7 @@ import Navbar from './components/layout/Navbar';
 import LoginForm from './components/auth/LoginForm';
 import SuperAdminDashboard from './pages/admin/Dashboard';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 const APP_PAGES = new Set(['home', 'expertise', 'projects', 'process', 'contact', 'login', 'superadmin']);
 
@@ -34,6 +35,13 @@ function AppContent() {
       window.history.pushState(null, '', path);
     }
     localStorage.setItem('triplevibe_last_page', resolvedPage);
+
+    // Track page view
+    fetch('http://localhost:5001/api/analytics/pageview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page: path }),
+    }).catch(() => {});
   }, [resolvedPage]);
 
   // Handle ketika user tekan tombol Back/Forward di Browser
@@ -76,9 +84,11 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

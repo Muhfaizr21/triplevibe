@@ -2,6 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import StatCard from './components/StatCard';
 import ProjectManagement from './ProjectManagement';
+import TestimonialManagement from './TestimonialManagement';
+import UserManagement from './UserManagement';
+import MediaLibrary from './MediaLibrary';
+import AnalyticsDashboard from './AnalyticsDashboard';
 import {
   Activity,
   Archive,
@@ -12,7 +16,6 @@ import {
   Users,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { supabase } from '../../lib/supabase/client';
 import { buildProjectSearchText, mapProjectRow } from '../../lib/projects';
 
 const Dashboard = () => {
@@ -245,59 +248,13 @@ const Dashboard = () => {
         ) : activeTab === 'projects' ? (
           <ProjectManagement />
         ) : activeTab === 'users' ? (
-          <div className="bg-white border border-mn-primary/5 rounded-[2.5rem] p-10">
-            <h2 className="text-2xl font-black uppercase italic text-mn-primary">User Directory</h2>
-            <div className="mt-8 space-y-4">
-              {profiles.map((member) => (
-                <div key={member.id} className="flex flex-col gap-2 rounded-3xl border border-mn-primary/5 p-5 md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <p className="font-black text-mn-primary">
-                      {[member.first_name, member.last_name].filter(Boolean).join(' ') || member.email}
-                    </p>
-                    <p className="text-sm text-mn-tertiary/50">{member.email}</p>
-                  </div>
-                  <span className="w-fit rounded-full bg-mn-surface px-3 py-1 text-[10px] font-black uppercase tracking-[0.25em] text-mn-primary">
-                    {member.role}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <UserManagement />
+        ) : activeTab === 'testimonials' ? (
+          <TestimonialManagement />
+        ) : activeTab === 'media' ? (
+          <MediaLibrary />
         ) : activeTab === 'analytics' ? (
-          <div className="grid gap-8 lg:grid-cols-2">
-            <div className="bg-white border border-mn-primary/5 rounded-[2.5rem] p-10">
-              <div className="flex items-center gap-3 mb-6">
-                <BarChart3 className="text-mn-primary" size={20} />
-                <h2 className="text-2xl font-black uppercase italic text-mn-primary">Category Analytics</h2>
-              </div>
-              <div className="space-y-4">
-                {categoryBreakdown.map(([category, count]) => (
-                  <div key={category} className="rounded-2xl bg-mn-surface p-5">
-                    <div className="flex items-center justify-between">
-                      <p className="font-bold text-mn-primary">{category}</p>
-                      <p className="text-sm font-black text-mn-primary">{count}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="bg-white border border-mn-primary/5 rounded-[2.5rem] p-10">
-              <h2 className="text-2xl font-black uppercase italic text-mn-primary">Publishing Overview</h2>
-              <div className="mt-8 grid gap-4">
-                {[
-                  ['Published', projects.filter((item) => item.status === 'published').length],
-                  ['Draft', projects.filter((item) => item.status === 'draft').length],
-                  ['Archived', projects.filter((item) => item.status === 'archived').length],
-                  ['Featured', projects.filter((item) => item.featured).length],
-                ].map(([label, value]) => (
-                  <div key={label} className="rounded-2xl border border-mn-primary/5 p-5 flex items-center justify-between">
-                    <p className="font-bold text-mn-primary">{label}</p>
-                    <p className="text-2xl font-black italic text-mn-primary">{value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <AnalyticsDashboard />
         ) : (
           <div className="bg-white border border-mn-primary/5 rounded-[2.5rem] p-10">
             <h2 className="text-2xl font-black uppercase italic text-mn-primary">Settings</h2>
