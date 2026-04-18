@@ -146,7 +146,10 @@ const initDB = async () => {
         ['expertise_hero_title', 'Arsitektur Digital\\nTanpa Kompromi.'],
         ['expertise_hero_subtitle', 'Kami membangun solusi perangkat lunak dengan presisi teknik sipil. Dari infrastruktur cloud hingga antarmuka mobile, setiap baris kode adalah fondasi masa depan bisnis Anda.'],
         ['process_hero_title', 'Arsitektur Alur Kerja yang Presisi.'],
-        ['process_hero_subtitle', 'Kami tidak sekadar membangun kode; kami merancang ekosistem digital. Setiap langkah dalam proses kami diatur dengan ketelitian teknis untuk memastikan hasil akhir yang monumental dan tahan lama.']
+        ['process_hero_subtitle', 'Kami tidak sekadar membangun kode; kami merancang ekosistem digital. Setiap langkah dalam proses kami diatur dengan ketelitian teknis untuk memastikan hasil akhir yang monumental dan tahan lama.'],
+        ['site_whatsapp', '6281234567890'],
+        ['site_email', 'hello@triplevibe.com'],
+        ['site_address', 'Jakarta, Indonesia']
       ];
       for (const [key, value] of defaultSettings) {
         await pool.query('INSERT INTO site_settings (setting_key, setting_value) VALUES ($1, $2)', [key, value]);

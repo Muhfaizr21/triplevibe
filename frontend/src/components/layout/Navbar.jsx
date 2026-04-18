@@ -2,10 +2,9 @@ import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { LogOut, User, Moon, Sun } from 'lucide-react';
+import { useSite } from '../../context/SiteContext';
 
-const WA_NUMBER = '6281234567890'; // Ganti dengan nomor WA Anda
-
-const trackAndOpenWA = async (source = 'navbar') => {
+const trackAndOpenWA = async (source = 'navbar', waNumber = '6281234567890') => {
   try {
     await fetch('http://localhost:5001/api/wa/track', {
       method: 'POST',
@@ -13,12 +12,14 @@ const trackAndOpenWA = async (source = 'navbar') => {
       body: JSON.stringify({ source }),
     });
   } catch (_) {}
-  window.open(`https://wa.me/${WA_NUMBER}?text=Halo%20TripleVibe%2C%20saya%20ingin%20konsultasi%20project!`, '_blank');
+  window.open(`https://wa.me/${waNumber}?text=Halo%20TripleVibe%2C%20saya%20ingin%20konsultasi%20project!`, '_blank');
 };
 
 const Navbar = ({ currentPage, onPageChange }) => {
   const { user, isAdmin, signOut } = useAuth();
   const { isDark, toggle } = useTheme();
+  const { settings } = useSite();
+  const waNumber = settings.site_whatsapp || '6281234567890';
 
   const navLinks = [
     { name: 'Home', id: 'home' },
@@ -104,7 +105,7 @@ const Navbar = ({ currentPage, onPageChange }) => {
               Log In
             </button>
             <button
-              onClick={() => trackAndOpenWA('navbar-contact-btn')}
+              onClick={() => trackAndOpenWA('navbar-contact-btn', waNumber)}
               className="bg-mn-primary text-white px-7 py-2.5 rounded-full font-black text-xs uppercase tracking-widest hover:shadow-lg hover:shadow-mn-primary/20 hover:-translate-y-0.5 active:translate-y-0 transition-all"
             >
               Contact

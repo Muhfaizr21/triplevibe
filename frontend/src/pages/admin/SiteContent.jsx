@@ -118,6 +118,18 @@ export default function SiteContent() {
           <InputField label="Hero Title" keyName="process_hero_title" />
           <InputField label="Hero Subtitle" keyName="process_hero_subtitle" isTextArea />
         </div>
+
+        {/* GLOBAL CONTACT */}
+        <div className="bg-white border border-mn-primary/5 rounded-[2.5rem] p-8 shadow-sm">
+          <h3 className="text-xl font-black text-mn-primary uppercase italic mb-6 border-b border-mn-primary/5 pb-4">
+            Global Contact & Links
+          </h3>
+          <div className="grid md:grid-cols-2 gap-x-6">
+            <InputField label="WhatsApp Number (e.g. 62812...)" keyName="site_whatsapp" />
+            <InputField label="Contact Email" keyName="site_email" />
+          </div>
+          <InputField label="Office Address" keyName="site_address" />
+        </div>
       </div>
     </div>
   );

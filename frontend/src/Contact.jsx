@@ -1,30 +1,41 @@
 import React from 'react';
-import { ArrowRight, Mail, MessageCircle, Phone } from 'lucide-react';
+import { ArrowRight, Mail, MessageCircle, Phone, MapPin } from 'lucide-react';
+import { useSite } from './context/SiteContext';
+import SEO from './components/SEO';
 
-const CONTACT_LINKS = [
-  {
-    label: 'WhatsApp',
-    value: '+62 812-3456-7890',
-    href: 'https://wa.me/6281234567890',
-    icon: MessageCircle,
-  },
-  {
-    label: 'Email',
-    value: 'hello@triplevibe.com',
-    href: 'mailto:hello@triplevibe.com',
-    icon: Mail,
-  },
-  {
-    label: 'Call',
-    value: '+62 21 5550 0199',
-    href: 'tel:+622155500199',
-    icon: Phone,
-  },
-];
+
+
 
 export default function Contact({ onPageChange }) {
+  const { settings } = useSite();
+  
+  const contactLinks = [
+    {
+      label: 'WhatsApp',
+      value: settings.site_whatsapp || '6281234567890',
+      href: `https://wa.me/${settings.site_whatsapp || '6281234567890'}`,
+      icon: MessageCircle,
+    },
+    {
+      label: 'Email',
+      value: settings.site_email || 'hello@triplevibe.com',
+      href: `mailto:${settings.site_email || 'hello@triplevibe.com'}`,
+      icon: Mail,
+    },
+    {
+      label: 'Office',
+      value: settings.site_address || 'Jakarta, Indonesia',
+      href: '#',
+      icon: MapPin,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-mn-surface pt-32 pb-20 px-8">
+      <SEO 
+        title="Contact | TripleVibe" 
+        description="Hubungi tim engineering kami untuk konsultasi project, audit bug, atau pembuatan MVP." 
+      />
       <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-[1.3fr_0.9fr]">
         <section className="bg-white border border-mn-primary/5 rounded-[3rem] p-10 md:p-14 shadow-sm">
           <div className="inline-flex items-center gap-2 rounded-full bg-mn-primary/5 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-mn-primary">
@@ -35,11 +46,11 @@ export default function Contact({ onPageChange }) {
             <span className="block text-mn-on-primary-container">Bukan Cuma Diskusi.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-mn-secondary">
-            Kirim kebutuhan Anda untuk audit bug, pembuatan MVP, atau perapihan arsitektur aplikasi. Kami siapkan arah teknis, estimasi, dan prioritas delivery yang jelas.
+            {`Kirim kebutuhan Anda ke ${settings.site_email || 'hello@triplevibe.com'} atau WhatsApp kami untuk audit bug, pembuatan MVP, atau perapihan arsitektur aplikasi.`}
           </p>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {CONTACT_LINKS.map(({ label, value, href, icon }) => {
+            {contactLinks.map(({ label, value, href, icon }) => {
               const Icon = icon;
 
               return (
