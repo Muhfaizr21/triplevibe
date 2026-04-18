@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>DevMonolith | Software Engineering Pro</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#afc8f0",
+                        "tertiary": "#110200",
+                        "tertiary-fixed-dim": "#fdb69a",
+                        "on-secondary-container": "#616363",
+                        "primary-container": "#001f3f",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c4c6cf",
+                        "outline": "#74777f",
+                        "tertiary-container": "#391303",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-surface": "#191c1d",
+                        "on-tertiary-fixed": "#351002",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#b5785f",
+                        "inverse-surface": "#2e3132",
+                        "secondary-container": "#dfe0e0",
+                        "surface": "#f8f9fa",
+                        "surface-variant": "#e1e3e4",
+                        "on-secondary-fixed-variant": "#454747",
+                        "primary-fixed": "#d4e3ff",
+                        "on-tertiary-fixed-variant": "#6b3a25",
+                        "surface-tint": "#476083",
+                        "primary": "#000613",
+                        "on-surface-variant": "#43474e",
+                        "on-primary-fixed": "#001c3a",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-background": "#191c1d",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary-fixed": "#e2e2e2",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary": "#5d5f5f",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "surface-container": "#edeeef",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#6f88ad",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "background": "#f8f9fa",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "primary-fixed-dim": "#afc8f0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-white">
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl rounded-full px-6 py-3 z-50 bg-white/70 dark:bg-[#000613]/70 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,31,63,0.05)] flex justify-between items-center transition-all">
+        <div class="text-xl font-black tracking-tighter text-[#001F3F] dark:text-white uppercase">DevMonolith</div>
+        <div class="hidden md:flex items-center gap-8">
+            <a class="font-manrope font-medium tracking-tight text-[#001F3F] dark:text-white font-bold border-b-2 border-[#001F3F] dark:border-white pb-1"
+                href="#">Services</a>
+            <a class="font-manrope font-medium tracking-tight text-slate-500 dark:text-slate-400 hover:text-[#001F3F] dark:hover:text-white transition-colors"
+                href="#">Expertise</a>
+            <a class="font-manrope font-medium tracking-tight text-slate-500 dark:text-slate-400 hover:text-[#001F3F] dark:hover:text-white transition-colors"
+                href="#">Projects</a>
+            <a class="font-manrope font-medium tracking-tight text-slate-500 dark:text-slate-400 hover:text-[#001F3F] dark:hover:text-white transition-colors"
+                href="#">Process</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="hidden lg:block text-slate-500 hover:text-primary transition-all font-medium text-sm">Log
+                In</button>
+            <button
+                class="bg-primary-container text-white px-6 py-2 rounded-full text-sm font-bold scale-95 active:scale-90 transition-transform">Get
+                Started</button>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center pt-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 z-10">
+                <div class="inline-flex items-center gap-2 bg-surface-container-high px-3 py-1 rounded-full mb-6">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary">High-End Engineering
+                        Solution</span>
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tighter text-primary leading-[1.1] mb-8">
+                    Solusi Software <br /> <span class="text-on-primary-container">Engineering</span> Profesional.
+                </h1>
+                <p class="text-lg text-secondary max-w-xl leading-relaxed mb-10">
+                    Kami menghadirkan keahlian teknis tingkat tinggi untuk membangun sistem yang skalabel, aman, dan
+                    efisien. Dari arsitektur hingga implementasi kode.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button
+                        class="bg-primary-container text-white px-10 py-4 rounded-xl font-bold shadow-2xl hover:bg-primary transition-all">Mulai
+                        Konsultasi</button>
+                    <button
+                        class="bg-white border border-outline-variant/30 text-primary px-10 py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all">Lihat
+                        Portofolio</button>
+                </div>
+            </div>
+            <div class="lg:col-span-5 relative">
+                <div
+                    class="relative w-full aspect-square rounded-[2rem] overflow-hidden shadow-[0_40px_80px_rgba(0,31,63,0.1)]">
+                    <img class="w-full h-full object-cover"
+                        data-alt="Modern minimalist workspace with high-end coding setup, cinematic dark navy lighting, clean lines, and soft atmospheric glow"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-XSrQEScEwXPQzNHed9xCo8e-1SrLmIlJxzUet8h3IbFcCFz_0crM8KWBlEThrhHtY9CJz1B4XbRBi6k9hlPt2ibscfTPhhU33Iv7kVkmOU45FU_SXPW3av7glVMq2Z_p9E2AU4FoLXqro2__2nidZ93vpiheR4_NIZ18DRL-1YLKVUEWzrJIf8BamEI9UJGmhYK_IOFwKJbTT9BZ8ZJeJ7Zr4A-82-p2Hz3uvStq6QkE4ljXZPCYMbxnMP8QtsNG1XI9l0D9H0aO" />
+                    <div class="absolute inset-0 bg-gradient-to-tr from-primary/40 to-transparent"></div>
+                </div>
+                <!-- Floating Element -->
+                <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl max-w-[200px]">
+                    <div class="flex gap-1 mb-2">
+                        <span class="material-symbols-outlined text-yellow-400"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-yellow-400"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-yellow-400"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-yellow-400"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-yellow-400"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                    </div>
+                    <p class="text-xs font-bold text-primary">Trusted by 500+ Engineers &amp; Students</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Services Bento Grid -->
+    <section class="py-32 bg-surface-container-low">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="mb-20 text-center lg:text-left">
+                <h2 class="text-4xl font-black text-primary tracking-tight mb-4">Layanan Eksklusif Kami</h2>
+                <p class="text-secondary max-w-lg">Pendekatan modular untuk setiap tantangan rekayasa perangkat lunak.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Service 1 -->
+                <div
+                    class="md:col-span-2 bg-white rounded-3xl p-10 flex flex-col justify-between group hover:shadow-2xl transition-all border border-white">
+                    <div>
+                        <div class="w-14 h-14 bg-surface-container rounded-2xl flex items-center justify-center mb-8">
+                            <span class="material-symbols-outlined text-primary text-3xl">terminal</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary mb-4">Pengembangan Web &amp; Mobile</h3>
+                        <p class="text-secondary leading-relaxed max-w-md">Membangun aplikasi performa tinggi dengan
+                            React, Flutter, dan arsitektur Cloud-Native yang modern.</p>
+                    </div>
+                    <div class="mt-12 flex items-center gap-4">
+                        <span class="text-sm font-bold text-primary uppercase tracking-widest">Detail Layanan</span>
+                        <div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+                        <span
+                            class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                    </div>
+                </div>
+                <!-- Service 2 -->
+                <div class="bg-primary-container rounded-3xl p-10 flex flex-col text-white shadow-2xl">
+                    <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-8">
+                        <span class="material-symbols-outlined text-white text-3xl">bug_report</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Penyelesaian Bug</h3>
+                    <p class="text-slate-300 leading-relaxed text-sm">Audit kode mendalam dan perbaikan bug kritikal
+                        secara efisien tanpa merusak struktur sistem yang ada.</p>
+                </div>
+                <!-- Service 3 -->
+                <div
+                    class="bg-white rounded-3xl p-10 flex flex-col border border-white group hover:shadow-2xl transition-all">
+                    <div class="w-14 h-14 bg-surface-container rounded-2xl flex items-center justify-center mb-8">
+                        <span class="material-symbols-outlined text-primary text-3xl">psychology</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-4">Konsultasi Project</h3>
+                    <p class="text-secondary leading-relaxed text-sm">Bimbingan teknis untuk skripsi, project akhir,
+                        atau MVP startup dengan standar industri global.</p>
+                </div>
+                <!-- Service 4 (Joki Project) -->
+                <div class="md:col-span-2 relative rounded-3xl overflow-hidden group">
+                    <img class="absolute inset-0 w-full h-full object-cover grayscale transition-all group-hover:grayscale-0 duration-700"
+                        data-alt="Professional office meeting with high-end tech equipment, focusing on software architecture diagrams and team collaboration"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtBMHErCa5H8ivMrFcvhuirZhv77EgcnNIfGk9sMLD9Tt8UfAd0CaGUM5gIKytYMD7iulpV6M4SW8EnekD2jUujj2OIYRHbzp-gEYHRo09di6HoUkeGz_KXy_6wX9NQnKP6S1BM8FqZu_84f9BokRBDQCtymZnedDoo50-XK7wJ5dvnzsBa9oAE-AXLQxl-D7xUpEWsuUWE4PAq01L75oRbWbxK0FZpOMLFiuPB-ppRfjL6TcdxDldneaupSiCfomcjHF9MIRQr1yM" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent p-10 flex flex-col justify-center">
+                        <h3 class="text-3xl font-bold text-white mb-4">Software Engineering Pro</h3>
+                        <p class="text-slate-200 max-w-xs mb-8">Delegasikan kerumitan teknis Anda kepada tim ahli kami.
+                            Hasil presisi, waktu tepat.</p>
+                        <button class="bg-white text-primary w-fit px-8 py-3 rounded-full font-bold text-sm">Hubungi
+                            Ahli</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Featured Case Study -->
+    <section class="py-32 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="lg:w-1/2">
+                    <span class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-6 block">Featured Case
+                        Study</span>
+                    <h2 class="text-4xl lg:text-5xl font-black text-primary tracking-tight leading-tight mb-8">FinTech
+                        Mobile App: Keamanan &amp; Skalabilitas.</h2>
+                    <div class="space-y-6">
+                        <div class="flex gap-4 p-6 bg-surface rounded-2xl border-l-4 border-primary">
+                            <span class="material-symbols-outlined text-primary">lock</span>
+                            <div>
+                                <h4 class="font-bold text-primary">Data Integrity</h4>
+                                <p class="text-sm text-secondary">Implementasi enkripsi end-to-end untuk transaksi
+                                    finansial yang aman.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 p-6 bg-surface rounded-2xl">
+                            <span class="material-symbols-outlined text-primary">speed</span>
+                            <div>
+                                <h4 class="font-bold text-primary">Microservices Architecture</h4>
+                                <p class="text-sm text-secondary">Optimasi load balancer untuk menangani jutaan request
+                                    per detik.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <div class="relative z-10 rounded-[3rem] overflow-hidden shadow-[0_50px_100px_rgba(0,31,63,0.15)]">
+                        <img class="w-full aspect-[4/5] object-cover"
+                            data-alt="Elegant fintech mobile application interface displayed on a premium smartphone with sleek navy and gold visual accents"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMCMAcZAFDKoKM8Gjd9Vr1vCWqdv4kdVIlKFoW-oFOA2IH6EMe8h-datVxQA2vjATOYkX8Tt9GYoIBpCmVaCx9DLoNuWcS-ENGO3BZMlBpHlUGLneIJfacd0NeBLvL8ZapSQFRUBYxvXQS9g82tGQdljkGDxS4ZeRK1OjWrWS8_HWKSKhXGZy8g6ZjDRRrM0f4VHgYJPwHHbYYfffp_HzVqIJaaVI6SNWGDe5mGeOFcMZfHuVizuOlkLYhkc5YA4SmiO_sobTi9jxh" />
+                    </div>
+                    <!-- Decorative back element -->
+                    <div
+                        class="absolute -top-10 -right-10 w-64 h-64 bg-primary-container rounded-full blur-[100px] opacity-10">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonial -->
+    <section class="py-32 bg-surface">
+        <div class="max-w-4xl mx-auto px-8 text-center">
+            <span class="material-symbols-outlined text-6xl text-outline-variant/40 mb-8"
+                style="font-variation-settings: 'FILL' 1;">format_quote</span>
+            <blockquote class="text-3xl md:text-4xl font-light italic text-primary leading-tight mb-12">
+                "Bantuan dari DevMonolith benar-benar di luar ekspektasi. Sebagai mahasiswa IT, saya belajar banyak
+                tentang bagaimana kode produksi yang sebenarnya ditulis. Hasil project skripsi saya mendapatkan pujian
+                tertinggi."
+            </blockquote>
+            <div class="flex items-center justify-center gap-4">
+                <div class="w-12 h-12 rounded-full overflow-hidden">
+                    <img class="w-full h-full object-cover"
+                        data-alt="Portrait of a young male IT student, smiling, professional appearance with soft urban background lighting"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZONHzWJvND7Q35kx1YB5TIXLWFgEGap7rJMD-t7K_o1VbCatetlOKz2LSpU-M86i7a2FBfbW6NU9IyWuQaaB1yMLwFbVtUWDlsNGz-WaTp1K0FYelex2aJn3wpsRm5-0l7Tnc_fqoKPA3TpcqFTlhTXu8-7ySudfHQYqzDGa9qb2BI-G8dkjADlX4Qw_uvhI7hDy9LYsnNEqG_J8laq7q9UIK6QaR1Q2SopNsx47KPDEg6EjKMSi_OlyW-u63IMA7oxeCCZnb-GOX" />
+                </div>
+                <div class="text-left">
+                    <div class="font-bold text-primary">Raka Ardiansyah</div>
+                    <div class="text-xs text-secondary uppercase tracking-widest">IT Student, Jakarta</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- CTA Section -->
+    <section class="py-24">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="bg-primary-container rounded-[3rem] p-12 lg:p-24 text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-0 left-0 w-full h-full"
+                        style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;">
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-4xl lg:text-6xl font-black text-white tracking-tighter mb-8">Siap Memulai Proyek
+                        Anda?</h2>
+                    <p class="text-slate-400 max-w-xl mx-auto mb-12 text-lg">Konsultasikan kebutuhan teknis Anda secara
+                        gratis hari ini. Kami siap menghadirkan solusi monolith yang kokoh.</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-6">
+                        <button
+                            class="bg-white text-primary px-12 py-5 rounded-2xl font-black text-lg shadow-xl hover:-translate-y-1 transition-all">Hubungi
+                            via WhatsApp</button>
+                        <button
+                            class="bg-white/10 text-white backdrop-blur-md border border-white/20 px-12 py-5 rounded-2xl font-black text-lg hover:bg-white/20 transition-all">Pelajari
+                            Harga</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-slate-50 dark:bg-[#000613] w-full py-20 px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
+                <div class="max-w-xs">
+                    <div class="text-2xl font-bold text-[#001F3F] dark:text-white mb-6">DevMonolith</div>
+                    <p class="font-manrope text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        Partner strategis untuk pengembangan perangkat lunak berkualitas tinggi dengan standar
+                        arsitektur industri.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-12">
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-primary uppercase text-xs tracking-widest">Navigation</h4>
+                        <ul class="space-y-2">
+                            <li><a class="font-manrope text-sm text-slate-500 hover:text-primary transition-colors"
+                                    href="#">Services</a></li>
+                            <li><a class="font-manrope text-sm text-slate-500 hover:text-primary transition-colors"
+                                    href="#">Expertise</a></li>
+                            <li><a class="font-manrope text-sm text-slate-500 hover:text-primary transition-colors"
+                                    href="#">Projects</a></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-primary uppercase text-xs tracking-widest">Support</h4>
+                        <ul class="space-y-2">
+                            <li><a class="font-manrope text-sm text-slate-500 hover:text-primary transition-colors"
+                                    href="#">Privacy Policy</a></li>
+                            <li><a class="font-manrope text-sm text-slate-500 hover:text-primary transition-colors"
+                                    href="#">Terms of Service</a></li>
+                            <li><a class="font-manrope text-sm text-slate-500 hover:text-primary transition-colors"
+                                    href="#">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-primary uppercase text-xs tracking-widest">Contact</h4>
+                        <ul class="space-y-2">
+                            <li><a class="font-manrope text-sm text-slate-500 hover:text-primary transition-colors"
+                                    href="#">Contact Us</a></li>
+                            <li><a class="font-manrope text-sm text-slate-500 hover:text-primary transition-colors"
+                                    href="#">Email</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="pt-8 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="font-manrope text-sm text-slate-500 dark:text-slate-400">© 2024 DevMonolith Engineering. All
+                    rights reserved.</p>
+                <div class="flex gap-6">
+                    <span
+                        class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">language</span>
+                    <span
+                        class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">share</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

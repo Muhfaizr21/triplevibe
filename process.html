@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Proses - DevMonolith Architectural Engineering</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-surface": "#191c1d",
+                        "tertiary-container": "#391303",
+                        "tertiary": "#110200",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error": "#ffffff",
+                        "surface-container": "#edeeef",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#d4e3ff",
+                        "on-tertiary-fixed-variant": "#6b3a25",
+                        "on-primary-fixed": "#001c3a",
+                        "secondary-container": "#dfe0e0",
+                        "on-primary-container": "#6f88ad",
+                        "surface-tint": "#476083",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#74777f",
+                        "primary-container": "#001f3f",
+                        "on-surface-variant": "#43474e",
+                        "inverse-surface": "#2e3132",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-container": "#b5785f",
+                        "background": "#f8f9fa",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "tertiary-fixed-dim": "#fdb69a",
+                        "on-tertiary-fixed": "#351002",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-secondary": "#ffffff",
+                        "primary": "#000613",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-low": "#f3f4f5",
+                        "on-background": "#191c1d",
+                        "secondary": "#5d5f5f",
+                        "surface": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#616363",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "inverse-primary": "#afc8f0",
+                        "primary-fixed-dim": "#afc8f0",
+                        "surface-bright": "#f8f9fa",
+                        "surface-container-highest": "#e1e3e4",
+                        "secondary-fixed": "#e2e2e2",
+                        "outline-variant": "#c4c6cf",
+                        "on-primary-fixed-variant": "#2f486a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .monolith-blur {
+            backdrop-filter: blur(24px);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background antialiased selection:bg-primary-container selection:text-white">
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full px-6 py-3 z-50 bg-slate-50/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex justify-between items-center px-8">
+        <div class="text-xl font-black tracking-tighter text-blue-950 uppercase">DevMonolith</div>
+        <div class="hidden md:flex gap-8 items-center">
+            <a class="text-slate-500 hover:text-blue-900 transition-colors font-medium tracking-tight"
+                href="#">Expertise</a>
+            <a class="text-slate-500 hover:text-blue-900 transition-colors font-medium tracking-tight"
+                href="#">Projects</a>
+            <a class="text-blue-900 font-bold border-b-2 border-blue-900 pb-1 tracking-tight" href="#">Process</a>
+            <a class="text-slate-500 hover:text-blue-900 transition-colors font-medium tracking-tight"
+                href="#">Contact</a>
+        </div>
+        <button
+            class="bg-primary-container text-white px-6 py-2 rounded-full font-medium text-sm active:scale-95 transition-transform">
+            Get Started
+        </button>
+    </nav>
+    <main class="pt-32 pb-24">
+        <!-- Hero Section: Editorial Focus -->
+        <section class="max-w-7xl mx-auto px-8 mb-32 flex flex-col md:flex-row gap-16 items-end">
+            <div class="md:w-3/5">
+                <span
+                    class="text-[0.75rem] font-bold uppercase tracking-[0.2em] text-on-primary-container mb-4 block">Metodologi
+                    Kami</span>
+                <h1 class="text-[3.5rem] font-black leading-[1.1] tracking-tighter text-primary mb-8">Arsitektur Alur
+                    Kerja yang Presisi.</h1>
+                <p class="text-lg text-on-surface-variant leading-relaxed max-w-xl">
+                    Kami tidak sekadar membangun kode; kami merancang ekosistem digital. Setiap langkah dalam proses
+                    kami diatur dengan ketelitian teknis untuk memastikan hasil akhir yang monumental dan tahan lama.
+                </p>
+            </div>
+            <div class="md:w-2/5 aspect-[4/3] bg-surface-container-high rounded-xl overflow-hidden relative group">
+                <img alt="Architectural conceptualization"
+                    class="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105"
+                    data-alt="Modern minimalist architectural building with clean white lines and deep shadows under a clear blue sky, high-end photography"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPIETNrlC5b3aQrQTxcxHwpWKQnI4X-mLd79TGoc0IIynPB1qV6qHRqHSrEDo_3EXLAh-rte5vg1XBcrSy4kKhia73PAw3MsXXBkWp46Ztc1t77DdqcCgn1qQ7DW0DhYbg51Aj4yWmtvEnMK-hPwC2Xv2h2bPF2spBtEPaeijv-frg0VUclQr68nQhcZUGkvxzb9nz-PGjYDmhrPajqgXK7dk0qXAJzPjaXdM2_VaWu3Ne8d0xyrFdiR-K9ffSzKaZLfjtimHqMGNy" />
+                <div class="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+            </div>
+        </section>
+        <!-- Process Diagram: Step-by-Step Monoliths -->
+        <section class="max-w-7xl mx-auto px-8 relative">
+            <!-- Background Vertical Line (Structural Guide) -->
+            <div
+                class="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-outline-variant/30 -translate-x-1/2 hidden md:block">
+            </div>
+            <div class="space-y-32">
+                <!-- Step 1: Konsultasi -->
+                <div class="relative flex flex-col md:flex-row items-center gap-12 group">
+                    <div class="md:w-1/2 text-right hidden md:block">
+                        <span
+                            class="text-7xl font-black text-surface-container-high group-hover:text-primary-container/10 transition-colors duration-500">01</span>
+                    </div>
+                    <div
+                        class="z-10 w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-white shadow-xl shadow-primary/20">
+                        <span class="material-symbols-outlined text-2xl" data-icon="chat_bubble">chat_bubble</span>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div
+                            class="bg-surface-container-lowest p-10 rounded-xl shadow-[0_30px_60px_rgb(0,6,19,0.05)] border-l-4 border-primary-container">
+                            <span
+                                class="text-[0.7rem] font-bold tracking-widest text-on-primary-container uppercase mb-2 block">Inisiasi</span>
+                            <h3 class="text-2xl font-bold text-primary mb-4">Konsultasi &amp; Penemuan</h3>
+                            <p class="text-on-surface-variant leading-relaxed mb-6">
+                                Memahami visi bisnis Anda adalah prioritas pertama. Kami melakukan deep-dive teknis
+                                untuk mengidentifikasi tantangan inti dan mendefinisikan parameter keberhasilan proyek.
+                            </p>
+                            <ul class="space-y-2">
+                                <li class="flex items-center gap-3 text-sm font-medium text-primary">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Stakeholder Interviews
+                                </li>
+                                <li class="flex items-center gap-3 text-sm font-medium text-primary">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Audit Teknis Awal
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 2: Perencanaan -->
+                <div class="relative flex flex-col md:flex-row-reverse items-center gap-12 group">
+                    <div class="md:w-1/2 text-left hidden md:block">
+                        <span
+                            class="text-7xl font-black text-surface-container-high group-hover:text-primary-container/10 transition-colors duration-500">02</span>
+                    </div>
+                    <div
+                        class="z-10 w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-white shadow-xl shadow-primary/20">
+                        <span class="material-symbols-outlined text-2xl" data-icon="architecture">architecture</span>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div
+                            class="bg-surface-container-lowest p-10 rounded-xl shadow-[0_30px_60px_rgb(0,6,19,0.05)] border-r-4 border-primary-container text-right">
+                            <span
+                                class="text-[0.7rem] font-bold tracking-widest text-on-primary-container uppercase mb-2 block">Strategi</span>
+                            <h3 class="text-2xl font-bold text-primary mb-4">Perencanaan &amp; Blueprint</h3>
+                            <p class="text-on-surface-variant leading-relaxed mb-6">
+                                Kami merancang cetak biru arsitektural yang mencakup stack teknologi, struktur database,
+                                dan User Experience yang intuitif sebelum satu baris kode pun ditulis.
+                            </p>
+                            <ul class="space-y-2 flex flex-col items-end">
+                                <li class="flex items-center gap-3 text-sm font-medium text-primary">
+                                    Product Roadmap <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                </li>
+                                <li class="flex items-center gap-3 text-sm font-medium text-primary">
+                                    System Architecture Design <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 3: Pengembangan -->
+                <div class="relative flex flex-col md:flex-row items-center gap-12 group">
+                    <div class="md:w-1/2 text-right hidden md:block">
+                        <span
+                            class="text-7xl font-black text-surface-container-high group-hover:text-primary-container/10 transition-colors duration-500">03</span>
+                    </div>
+                    <div
+                        class="z-10 w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-white shadow-xl shadow-primary/20">
+                        <span class="material-symbols-outlined text-2xl" data-icon="terminal">terminal</span>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div
+                            class="bg-surface-container-lowest p-10 rounded-xl shadow-[0_30px_60px_rgb(0,6,19,0.05)] border-l-4 border-primary-container">
+                            <span
+                                class="text-[0.7rem] font-bold tracking-widest text-on-primary-container uppercase mb-2 block">Eksekusi</span>
+                            <h3 class="text-2xl font-bold text-primary mb-4">Pengembangan Agile</h3>
+                            <p class="text-on-surface-variant leading-relaxed mb-6">
+                                Menggunakan metodologi Agile, tim engineer kami membangun solusi Anda dalam sprint yang
+                                terukur, memastikan transparansi penuh dan iterasi yang cepat sepanjang proses.
+                            </p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-surface-container-low p-4 rounded-lg text-center">
+                                    <span class="block text-xl font-bold text-primary">Sprint</span>
+                                    <span class="text-[0.6rem] uppercase tracking-tighter text-slate-500">Bimonthly
+                                        Updates</span>
+                                </div>
+                                <div class="bg-surface-container-low p-4 rounded-lg text-center">
+                                    <span class="block text-xl font-bold text-primary">CI/CD</span>
+                                    <span class="text-[0.6rem] uppercase tracking-tighter text-slate-500">Modern
+                                        Pipeline</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 4: Testing -->
+                <div class="relative flex flex-col md:flex-row-reverse items-center gap-12 group">
+                    <div class="md:w-1/2 text-left hidden md:block">
+                        <span
+                            class="text-7xl font-black text-surface-container-high group-hover:text-primary-container/10 transition-colors duration-500">04</span>
+                    </div>
+                    <div
+                        class="z-10 w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-white shadow-xl shadow-primary/20">
+                        <span class="material-symbols-outlined text-2xl" data-icon="verified">verified</span>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div
+                            class="bg-surface-container-lowest p-10 rounded-xl shadow-[0_30px_60px_rgb(0,6,19,0.05)] border-r-4 border-primary-container text-right">
+                            <span
+                                class="text-[0.7rem] font-bold tracking-widest text-on-primary-container uppercase mb-2 block">Validasi</span>
+                            <h3 class="text-2xl font-bold text-primary mb-4">Testing &amp; QA Ketat</h3>
+                            <p class="text-on-surface-variant leading-relaxed mb-6">
+                                Setiap modul melewati pengujian otomatis dan manual yang ketat. Kami memastikan
+                                skalabilitas, keamanan, dan performa optimal di bawah beban kerja yang nyata.
+                            </p>
+                            <ul class="space-y-2 flex flex-col items-end">
+                                <li class="flex items-center gap-3 text-sm font-medium text-primary">
+                                    Penetration Testing <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                </li>
+                                <li class="flex items-center gap-3 text-sm font-medium text-primary">
+                                    UAT (User Acceptance Testing) <span
+                                        class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 5: Penyerahan -->
+                <div class="relative flex flex-col md:flex-row items-center gap-12 group">
+                    <div class="md:w-1/2 text-right hidden md:block">
+                        <span
+                            class="text-7xl font-black text-surface-container-high group-hover:text-primary-container/10 transition-colors duration-500">05</span>
+                    </div>
+                    <div
+                        class="z-10 w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-white shadow-xl shadow-primary/20">
+                        <span class="material-symbols-outlined text-2xl" data-icon="auto_awesome">auto_awesome</span>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div
+                            class="bg-surface-container-lowest p-10 rounded-xl shadow-[0_30px_60px_rgb(0,6,19,0.05)] border-l-4 border-primary-container">
+                            <span
+                                class="text-[0.7rem] font-bold tracking-widest text-on-primary-container uppercase mb-2 block">Finalisasi</span>
+                            <h3 class="text-2xl font-bold text-primary mb-4">Penyerahan &amp; Support</h3>
+                            <p class="text-on-surface-variant leading-relaxed mb-6">
+                                Proses tidak berakhir saat peluncuran. Kami menyerahkan dokumentasi lengkap dan
+                                menyediakan dukungan pasca-rilis untuk memastikan transisi yang mulus ke operasional
+                                penuh.
+                            </p>
+                            <div class="flex gap-4">
+                                <button
+                                    class="text-xs font-bold uppercase tracking-widest border-b-2 border-primary-container pb-1">Lihat
+                                    Dokumentasi</button>
+                                <button
+                                    class="text-xs font-bold uppercase tracking-widest border-b-2 border-primary-container pb-1">Paket
+                                    Pemeliharaan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Bento Grid: Tools & Tech -->
+        <section class="max-w-7xl mx-auto px-8 mt-48">
+            <div class="mb-12">
+                <h2 class="text-4xl font-black tracking-tight text-primary">Infrastruktur Teknologi</h2>
+                <p class="text-on-surface-variant mt-2">Dukungan alat kelas dunia untuk hasil kelas dunia.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[600px]">
+                <div
+                    class="md:col-span-2 md:row-span-2 bg-primary text-white p-12 rounded-xl flex flex-col justify-between overflow-hidden relative">
+                    <div class="z-10">
+                        <h4 class="text-3xl font-bold mb-4">Scalable Cloud Architecture</h4>
+                        <p class="opacity-70 leading-relaxed">Membangun di atas AWS dan Azure untuk reliabilitas 99.99%.
+                        </p>
+                    </div>
+                    <div class="absolute bottom-[-10%] right-[-10%] opacity-10">
+                        <span class="material-symbols-outlined text-[20rem]" data-icon="cloud">cloud</span>
+                    </div>
+                </div>
+                <div
+                    class="bg-surface-container-low p-8 rounded-xl flex flex-col justify-center items-center gap-4 text-center">
+                    <span class="material-symbols-outlined text-4xl text-primary" data-icon="shield">shield</span>
+                    <span class="font-bold text-primary">Cyber Security First</span>
+                </div>
+                <div
+                    class="bg-surface-container-low p-8 rounded-xl flex flex-col justify-center items-center gap-4 text-center">
+                    <span class="material-symbols-outlined text-4xl text-primary" data-icon="speed">speed</span>
+                    <span class="font-bold text-primary">High Performance</span>
+                </div>
+                <div
+                    class="md:col-span-2 bg-surface-container-highest p-8 rounded-xl flex items-center justify-between group">
+                    <div>
+                        <h4 class="text-xl font-bold text-primary">Analisis Data Real-time</h4>
+                        <p class="text-sm text-on-surface-variant">Monitoring setiap detik operasional.</p>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-5xl opacity-20 group-hover:opacity-100 transition-opacity"
+                        data-icon="monitoring">monitoring</span>
+                </div>
+            </div>
+        </section>
+        <!-- CTA Section -->
+        <section
+            class="max-w-5xl mx-auto px-8 mt-48 text-center bg-surface-container-low py-20 rounded-3xl border border-outline-variant/10">
+            <h2 class="text-4xl font-black tracking-tight text-primary mb-6">Siap Memulai Transformasi?</h2>
+            <p class="text-lg text-on-surface-variant mb-10 max-w-2xl mx-auto">
+                Diskusikan proyek Anda dengan tim engineering kami hari ini dan lihat bagaimana proses terstruktur kami
+                membawa ide Anda menjadi kenyataan.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button
+                    class="bg-primary text-white px-10 py-4 rounded-full font-bold transition-all hover:shadow-2xl hover:shadow-primary/30 active:scale-95">Jadwalkan
+                    Konsultasi Gratis</button>
+                <button
+                    class="bg-white text-primary border border-primary/10 px-10 py-4 rounded-full font-bold transition-all hover:bg-slate-50 active:scale-95">Pelajari
+                    Expertise Kami</button>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full pt-20 pb-10 px-8 bg-blue-950 text-white">
+        <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8">
+            <div class="text-lg font-bold text-white uppercase tracking-widest">DevMonolith</div>
+            <div class="flex gap-8">
+                <a class="text-slate-400 hover:text-white transition-colors text-sm tracking-wide" href="#">Privacy
+                    Policy</a>
+                <a class="text-slate-400 hover:text-white transition-colors text-sm tracking-wide" href="#">Terms of
+                    Service</a>
+                <a class="text-slate-400 hover:text-white transition-colors text-sm tracking-wide" href="#">Github</a>
+                <a class="text-slate-400 hover:text-white transition-colors text-sm tracking-wide" href="#">LinkedIn</a>
+            </div>
+            <p class="text-slate-400 text-sm font-manrope tracking-wide">© 2024 DevMonolith Architectural Engineering.
+                All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

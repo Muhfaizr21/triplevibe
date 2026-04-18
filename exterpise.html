@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Expertise - DevMonolith Architectural Engineering</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-surface": "#191c1d",
+                        "tertiary-container": "#391303",
+                        "tertiary": "#110200",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error": "#ffffff",
+                        "surface-container": "#edeeef",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#d4e3ff",
+                        "on-tertiary-fixed-variant": "#6b3a25",
+                        "on-primary-fixed": "#001c3a",
+                        "secondary-container": "#dfe0e0",
+                        "on-primary-container": "#6f88ad",
+                        "surface-tint": "#476083",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#74777f",
+                        "primary-container": "#001f3f",
+                        "on-surface-variant": "#43474e",
+                        "inverse-surface": "#2e3132",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-container": "#b5785f",
+                        "background": "#f8f9fa",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "tertiary-fixed-dim": "#fdb69a",
+                        "on-tertiary-fixed": "#351002",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-secondary": "#ffffff",
+                        "primary": "#000613",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-low": "#f3f4f5",
+                        "on-background": "#191c1d",
+                        "secondary": "#5d5f5f",
+                        "surface": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#616363",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "inverse-primary": "#afc8f0",
+                        "primary-fixed-dim": "#afc8f0",
+                        "surface-bright": "#f8f9fa",
+                        "surface-container-highest": "#e1e3e4",
+                        "secondary-fixed": "#e2e2e2",
+                        "outline-variant": "#c4c6cf",
+                        "on-primary-fixed-variant": "#2f486a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background antialiased selection:bg-primary-container selection:text-on-primary">
+    <!-- Top Navigation Bar -->
+    <nav
+        class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full px-6 py-3 z-50 bg-slate-50/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex justify-between items-center">
+        <div class="text-xl font-black tracking-tighter text-blue-950 uppercase">DevMonolith</div>
+        <div class="hidden md:flex items-center gap-8 font-medium tracking-tight text-slate-500">
+            <a class="text-blue-900 font-bold border-b-2 border-blue-900 pb-1" href="#">Expertise</a>
+            <a class="hover:text-blue-900 transition-colors" href="#">Projects</a>
+            <a class="hover:text-blue-900 transition-colors" href="#">Process</a>
+            <a class="hover:text-blue-900 transition-colors" href="#">Contact</a>
+        </div>
+        <button
+            class="bg-primary-container text-on-primary px-6 py-2 rounded-full font-bold text-sm tracking-tight hover:scale-95 transition-transform">
+            Get Started
+        </button>
+    </nav>
+    <main class="pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto">
+        <!-- Hero Section: Editorial Header -->
+        <header class="mb-24 flex flex-col md:flex-row justify-between items-end gap-8">
+            <div class="max-w-2xl">
+                <span class="label-md uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-4 block">Our
+                    Specialization</span>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter text-primary leading-none">
+                    Arsitektur Digital<br />Tanpa Kompromi.
+                </h1>
+                <p class="mt-8 text-xl text-on-surface-variant font-medium leading-relaxed max-w-xl">
+                    Kami membangun solusi perangkat lunak dengan presisi teknik sipil. Dari infrastruktur cloud hingga
+                    antarmuka mobile, setiap baris kode adalah fondasi masa depan bisnis Anda.
+                </p>
+            </div>
+            <div class="hidden md:block w-32 h-1 bg-primary mb-6"></div>
+        </header>
+        <!-- Expertise Grid: Bento Style -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- Web Development Card -->
+            <div
+                class="md:col-span-8 bg-surface-container-lowest p-10 rounded-xl shadow-sm group hover:shadow-xl transition-shadow duration-500 flex flex-col justify-between min-h-[400px]">
+                <div>
+                    <div class="flex justify-between items-start mb-12">
+                        <span class="material-symbols-outlined text-4xl text-primary"
+                            data-icon="terminal">terminal</span>
+                        <span
+                            class="text-sm font-bold tracking-widest text-on-surface-variant uppercase bg-surface-container px-3 py-1 rounded">Web
+                            Engineering</span>
+                    </div>
+                    <h2 class="text-4xl font-bold tracking-tight text-primary mb-4">Pengembangan Web Skala Enterprise
+                    </h2>
+                    <p class="text-on-surface-variant leading-relaxed max-w-lg mb-8">
+                        Membangun ekosistem web yang reaktif, aman, dan berkinerja tinggi menggunakan stack modern yang
+                        dioptimalkan untuk kecepatan dan skalabilitas.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span
+                            class="px-4 py-2 bg-surface-container-low rounded-lg text-sm font-bold text-primary">React.js</span>
+                        <span
+                            class="px-4 py-2 bg-surface-container-low rounded-lg text-sm font-bold text-primary">Next.js</span>
+                        <span
+                            class="px-4 py-2 bg-surface-container-low rounded-lg text-sm font-bold text-primary">TypeScript</span>
+                        <span
+                            class="px-4 py-2 bg-surface-container-low rounded-lg text-sm font-bold text-primary">Tailwind
+                            CSS</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile App Card -->
+            <div
+                class="md:col-span-4 bg-primary-container p-10 rounded-xl text-white flex flex-col justify-between group overflow-hidden relative">
+                <div class="relative z-10">
+                    <span class="material-symbols-outlined text-4xl mb-8" data-icon="smartphone">smartphone</span>
+                    <h2 class="text-3xl font-bold tracking-tight mb-4 leading-tight">Mobile Application</h2>
+                    <p class="text-on-primary-container leading-relaxed mb-6">
+                        Pengalaman native yang mulus di iOS dan Android dengan satu basis kode atau optimasi
+                        platform-spesifik.
+                    </p>
+                    <ul class="space-y-3 font-semibold">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-on-primary rounded-full"></span>
+                            Flutter Framework</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-on-primary rounded-full"></span>
+                            Swift UI (Native iOS)</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-on-primary rounded-full"></span>
+                            Kotlin (Native Android)</li>
+                    </ul>
+                </div>
+                <!-- Abstract visual element -->
+                <div
+                    class="absolute -bottom-10 -right-10 w-40 h-40 bg-on-primary/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                </div>
+            </div>
+            <!-- Cloud Infrastructure Card -->
+            <div class="md:col-span-6 bg-surface-container-low p-10 rounded-xl flex flex-col justify-between">
+                <div>
+                    <span class="material-symbols-outlined text-4xl text-primary mb-8"
+                        data-icon="cloud_done">cloud_done</span>
+                    <h2 class="text-3xl font-bold tracking-tight text-primary mb-4">Infrastruktur Cloud &amp; DevOps
+                    </h2>
+                    <p class="text-on-surface-variant leading-relaxed mb-8">
+                        Otomasi infrastruktur yang memastikan aplikasi Anda selalu aktif, aman, dan dapat menangani
+                        lonjakan trafik tanpa hambatan.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-white rounded-lg shadow-sm">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Provider</p>
+                        <p class="font-bold text-primary">AWS / Google Cloud</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow-sm">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Orchestration</p>
+                        <p class="font-bold text-primary">Kubernetes / Docker</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Database Management Card -->
+            <div
+                class="md:col-span-6 bg-surface-container-lowest border border-outline-variant/15 p-10 rounded-xl flex flex-col md:flex-row gap-8 items-center">
+                <div class="flex-1">
+                    <span class="material-symbols-outlined text-4xl text-primary mb-6"
+                        data-icon="database">database</span>
+                    <h2 class="text-3xl font-bold tracking-tight text-primary mb-4">Manajemen Data Modern</h2>
+                    <p class="text-on-surface-variant leading-relaxed">
+                        Arsitektur data yang dirancang untuk integritas, kecepatan kueri, dan skalabilitas masif
+                        menggunakan teknologi SQL dan NoSQL.
+                    </p>
+                </div>
+                <div class="flex-1 w-full aspect-square bg-slate-100 rounded-lg overflow-hidden grayscale contrast-125">
+                    <img alt="Server Architecture" class="w-full h-full object-cover"
+                        data-alt="Close-up of futuristic server data center with glowing blue lights and complex cable management in a clean environment"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSMbU7gSuW5_V0N6ROu-WVUkv8Ns8Qx0RPINE27QgUL08hHt8ADbiAyquA_6Xajya8BqsZat_mUV-Nt2pg3jgPBx681Du1FOX0ZrhKeMwkeFDZZUXnIPHcv8QyRGk17iNUHbDT5PWY1yQyKdr3cxdaxuapjDEfHQdGL8Ffymj8-SCEDOnpg2hfqvTmZryylZYtqYH8JeCU9XwCK84N4UYvvkeAejw4hsB5v94r0p5Na0VDBiZMAaQSjABOiWUva3qJ1f0WuCvh_W0C" />
+                </div>
+            </div>
+        </div>
+        <!-- Tech Stack Section (Horizontal Scroll/Marquee feel) -->
+        <section class="mt-32">
+            <h3 class="text-sm font-bold tracking-[0.3em] uppercase text-slate-400 mb-12 text-center">Teknologi Inti
+                Kami</h3>
+            <div
+                class="flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="flex items-center gap-2 font-bold text-xl"><span class="material-symbols-outlined"
+                        data-icon="deployed_code">deployed_code</span> Kubernetes</div>
+                <div class="flex items-center gap-2 font-bold text-xl"><span class="material-symbols-outlined"
+                        data-icon="storage">storage</span> PostgreSQL</div>
+                <div class="flex items-center gap-2 font-bold text-xl"><span class="material-symbols-outlined"
+                        data-icon="bolt">bolt</span> Next.js</div>
+                <div class="flex items-center gap-2 font-bold text-xl"><span class="material-symbols-outlined"
+                        data-icon="security">security</span> OAuth 2.0</div>
+                <div class="flex items-center gap-2 font-bold text-xl"><span class="material-symbols-outlined"
+                        data-icon="api">api</span> GraphQL</div>
+            </div>
+        </section>
+        <!-- CTA Section: Asymmetric -->
+        <section class="mt-40 bg-primary rounded-2xl p-12 md:p-20 relative overflow-hidden">
+            <div class="relative z-10 max-w-2xl">
+                <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tighter leading-tight mb-8">Siap Membangun
+                    Monolit Digital Anda?</h2>
+                <p class="text-xl text-slate-400 mb-10 leading-relaxed">Konsultasikan kebutuhan teknis Anda dengan tim
+                    engineering kami untuk strategi implementasi yang tepat sasaran.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button
+                        class="px-8 py-4 bg-white text-primary font-bold rounded-lg hover:bg-slate-100 transition-colors">Mulai
+                        Proyek</button>
+                    <button
+                        class="px-8 py-4 border border-white/20 text-white font-bold rounded-lg hover:bg-white/5 transition-colors">Lihat
+                        Studi Kasus</button>
+                </div>
+            </div>
+            <!-- Background Decoration -->
+            <div
+                class="absolute right-0 top-0 w-1/3 h-full opacity-10 flex flex-col justify-around text-[200px] font-black pointer-events-none select-none">
+                <div class="translate-x-1/2">DEV</div>
+                <div class="translate-x-1/4">MONO</div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full pt-20 pb-10 px-8 bg-blue-950 dark:bg-black text-white">
+        <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8">
+            <div class="text-lg font-bold text-white uppercase tracking-tighter">DevMonolith</div>
+            <div class="flex flex-wrap justify-center gap-8 text-sm font-manrope tracking-wide">
+                <a class="text-slate-400 hover:text-white transition-colors" href="#">Privacy Policy</a>
+                <a class="text-slate-400 hover:text-white transition-colors" href="#">Terms of Service</a>
+                <a class="text-slate-400 hover:text-white transition-colors" href="#">Github</a>
+                <a class="text-slate-400 hover:text-white transition-colors" href="#">LinkedIn</a>
+            </div>
+            <p class="text-slate-400 text-sm font-manrope tracking-wide">© 2024 DevMonolith Architectural Engineering.
+                All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+import React from 'react';
+import { useAuth } from '../../context/AuthContext';
+import { LogOut, User } from 'lucide-react';
+
+const Navbar = ({ currentPage, onPageChange }) => {
+  const { user, isAdmin, signOut } = useAuth();
+
+  const navLinks = [
+    { name: 'Home', id: 'home' },
+    { name: 'Expertise', id: 'expertise' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Process', id: 'process' },
+    { name: 'Contact', id: 'contact' },
+  ];
+
+  const handleSignOut = async () => {
+    await signOut();
+    onPageChange('home');
+  };
+
+  return (
+    <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full px-8 py-4 z-50 bg-mn-surface/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] flex justify-between items-center transition-all border border-white/10">
+      <div 
+        className="text-2xl font-black tracking-tighter text-white uppercase cursor-pointer hover:opacity-80 transition-opacity italic"
+        onClick={() => onPageChange('home')}
+      >
+        Triple<span className="text-mn-primary">Vibe</span>
+      </div>
+      
+      <div className="hidden md:flex items-center gap-10">
+        {navLinks.map((link) => (
+          <button
+            key={link.id}
+            onClick={() => onPageChange(link.id)}
+            className={`font-manrope text-xs font-bold uppercase tracking-widest transition-all duration-300 relative py-1 ${
+              currentPage === link.id
+                ? 'text-mn-primary'
+                : 'text-mn-tertiary hover:text-white'
+            }`}
+          >
+            {link.name}
+          </button>
+        ))}
+        {isAdmin && (
+          <button
+            onClick={() => onPageChange('superadmin')}
+            className={`font-manrope text-xs font-bold uppercase tracking-widest transition-all duration-300 py-1 ${
+              currentPage === 'superadmin' ? 'text-mn-primary' : 'text-mn-tertiary hover:text-white'
+            }`}
+          >
+            Dashboard
+          </button>
+        )}
+      </div>
+
+      <div className="flex items-center gap-4">
+        {user ? (
+          <div className="flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-2 text-white/60 text-xs font-bold bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+              <User size={14} className="text-mn-primary" />
+              {user.email.split('@')[0]}
+            </div>
+            <button 
+              onClick={handleSignOut}
+              className="text-mn-tertiary hover:text-red-400 transition-all p-2"
+              title="Sign Out"
+            >
+              <LogOut size={18} />
+            </button>
+          </div>
+        ) : (
+          <>
+            <button 
+              onClick={() => onPageChange('login')}
+              className="hidden lg:block text-mn-tertiary hover:text-white transition-all font-black text-xs uppercase tracking-widest"
+            >
+              Log In
+            </button>
+            <button
+              onClick={() => onPageChange('contact')}
+              className="bg-mn-primary text-white px-7 py-2.5 rounded-full font-black text-xs uppercase tracking-widest hover:shadow-lg hover:shadow-mn-primary/20 hover:-translate-y-0.5 active:translate-y-0 transition-all"
+            >
+              Contact
+            </button>
+          </>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
