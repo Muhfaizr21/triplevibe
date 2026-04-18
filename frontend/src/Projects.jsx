@@ -28,6 +28,7 @@ import {
   DEFAULT_PROJECT_IMAGE,
   mapProjectRow,
 } from './lib/projects';
+import SEO from './components/SEO';
 
 const ProjectModal = ({ project, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -40,8 +41,29 @@ const ProjectModal = ({ project, onClose }) => {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % allImages.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + allImages.length) % allImages.length);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": project.title,
+    "description": project.description,
+    "image": project.image_url || DEFAULT_PROJECT_IMAGE,
+    "datePublished": project.published_at || project.created_at,
+    "dateModified": project.created_at,
+    "author": {
+      "@type": "Organization",
+      "name": "TripleVibe"
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-300">
+      <SEO 
+        title={`${project.title} | TripleVibe Portfolio`} 
+        description={project.description} 
+        image={project.image_url || DEFAULT_PROJECT_IMAGE} 
+        jsonLd={jsonLd}
+        type="article"
+      />
       <div className="absolute inset-0 bg-mn-primary/40 backdrop-blur-xl" onClick={onClose}></div>
 
       <div className="bg-white w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-[3rem] relative z-10 shadow-2xl animate-in zoom-in-95 duration-500">
@@ -256,6 +278,12 @@ export default function Projects() {
 
   return (
     <div className="bg-mn-surface min-h-screen pt-32 pb-20 px-8 selection:bg-mn-primary selection:text-white">
+      {!selectedProject && (
+        <SEO 
+          title="Portfolio | TripleVibe" 
+          description="Eksplorasi proyek yang sudah published, terkurasi berdasarkan kategori, dan siap dilihat detail implementasinya." 
+        />
+      )}
       <div className="max-w-7xl mx-auto">
         <header className="mb-12 text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
           <div className="inline-block px-4 py-1.5 bg-mn-primary/5 rounded-full mb-6">

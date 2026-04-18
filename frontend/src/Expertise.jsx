@@ -1,19 +1,26 @@
 import React from 'react';
+import { useSite } from './context/SiteContext';
+import SEO from './components/SEO';
 
-const Hero = () => (
-  <header className="mb-24 flex flex-col md:flex-row justify-between items-end gap-8">
-    <div className="max-w-2xl">
-      <span className="text-xs uppercase tracking-[0.2em] text-mn-on-surface-variant font-bold mb-4 block">Our Specialization</span>
-      <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-mn-primary leading-none">
-        Arsitektur Digital<br />Tanpa Kompromi.
-      </h1>
-      <p className="mt-8 text-xl text-mn-on-surface-variant font-medium leading-relaxed max-w-xl">
-        Kami membangun solusi perangkat lunak dengan presisi teknik sipil. Dari infrastruktur cloud hingga antarmuka mobile, setiap baris kode adalah fondasi masa depan bisnis Anda.
-      </p>
-    </div>
-    <div className="hidden md:block w-32 h-1 bg-mn-primary mb-6"></div>
-  </header>
-);
+const Hero = () => {
+  const { settings } = useSite();
+  const formatText = (text) => text ? text.split('\\n').map((str, i) => <React.Fragment key={i}>{str}{i !== text.split('\\n').length - 1 && <br/>}</React.Fragment>) : null;
+
+  return (
+    <header className="mb-24 flex flex-col md:flex-row justify-between items-end gap-8">
+      <div className="max-w-2xl">
+        <span className="text-xs uppercase tracking-[0.2em] text-mn-on-surface-variant font-bold mb-4 block">Our Specialization</span>
+        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-mn-primary leading-none">
+          {formatText(settings.expertise_hero_title) || <>Arsitektur Digital<br />Tanpa Kompromi.</>}
+        </h1>
+        <p className="mt-8 text-xl text-mn-on-surface-variant font-medium leading-relaxed max-w-xl whitespace-pre-wrap">
+          {settings.expertise_hero_subtitle || 'Kami membangun solusi perangkat lunak dengan presisi teknik sipil. Dari infrastruktur cloud hingga antarmuka mobile, setiap baris kode adalah fondasi masa depan bisnis Anda.'}
+        </p>
+      </div>
+      <div className="hidden md:block w-32 h-1 bg-mn-primary mb-6"></div>
+    </header>
+  );
+};
 
 const ExpertiseGrid = () => (
   <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -144,8 +151,15 @@ const Footer = () => (
 );
 
 export default function Expertise() {
+  const { settings } = useSite();
+  const formatText = (text) => text ? text.split('\\n').join(' ') : '';
+
   return (
     <div className="bg-mn-surface text-mn-on-background antialiased selection:bg-mn-primary-container selection:text-white font-manrope">
+      <SEO 
+        title={formatText(settings.expertise_hero_title) || "Expertise | TripleVibe"}
+        description={formatText(settings.expertise_hero_subtitle) || "Spesialisasi kami dalam membangun aplikasi."}
+      />
       <main className="pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto">
         <Hero />
         <ExpertiseGrid />

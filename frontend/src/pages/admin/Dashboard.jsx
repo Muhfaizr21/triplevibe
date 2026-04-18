@@ -6,6 +6,7 @@ import TestimonialManagement from './TestimonialManagement';
 import UserManagement from './UserManagement';
 import MediaLibrary from './MediaLibrary';
 import AnalyticsDashboard from './AnalyticsDashboard';
+import SiteContent from './SiteContent';
 import {
   Activity,
   Archive,
@@ -19,7 +20,10 @@ import { useAuth } from '../../context/AuthContext';
 import { buildProjectSearchText, mapProjectRow } from '../../lib/projects';
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState(() => {
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    return segments[1] || 'dashboard'; // /superadmin/projects -> projects
+  });
   const [projects, setProjects] = useState([]);
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,10 +32,29 @@ const Dashboard = () => {
 
   const API_URL = 'http://localhost:5001/api';
 
+  // Sync tab changes to URL
+  useEffect(() => {
+    const path = `/superadmin/${activeTab}`;
+    if (window.location.pathname !== path) {
+      window.history.pushState(null, '', path);
+    }
+  }, [activeTab]);
+
+  // Handle browser back/forward within dashboard
+  useEffect(() => {
+    const handlePop = () => {
+      const segments = window.location.pathname.split('/').filter(Boolean);
+      if (segments[0] === 'superadmin') {
+        setActiveTab(segments[1] || 'dashboard');
+      }
+    };
+    window.addEventListener('popstate', handlePop);
+    return () => window.removeEventListener('popstate', handlePop);
+  }, []);
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       setLoading(true);
-
       try {
         const [projectsRes, profilesRes] = await Promise.all([
           fetch(`${API_URL}/projects`),
@@ -124,8 +147,8 @@ const Dashboard = () => {
     <div className="flex min-h-screen bg-mn-surface font-manrope">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <main className="flex-grow ml-72 p-10">
-        <header className="flex flex-col gap-6 lg:flex-row lg:justify-between lg:items-center mb-12">
+      <main className="flex-grow lg:ml-72 p-6 lg:p-10 w-full max-w-[100vw] overflow-x-hidden">
+        <header className="flex flex-col gap-6 lg:flex-row lg:justify-between lg:items-center mb-8 lg:mb-12 pt-16 lg:pt-0">
           <div>
             <h1 className="text-4xl font-black text-mn-primary uppercase tracking-tighter italic">
               System <span className="text-mn-on-primary-container">Overview</span>
@@ -255,20 +278,12 @@ const Dashboard = () => {
           <MediaLibrary />
         ) : activeTab === 'analytics' ? (
           <AnalyticsDashboard />
+        ) : activeTab === 'site-content' ? (
+          <SiteContent />
         ) : (
           <div className="bg-white border border-mn-primary/5 rounded-[2.5rem] p-10">
             <h2 className="text-2xl font-black uppercase italic text-mn-primary">Settings</h2>
-            <div className="mt-8 grid gap-4">
-              {[
-                'Admin access mengikuti role di tabel profiles dan session Supabase.',
-                'Halaman publik hanya menampilkan project dengan status published.',
-                'Featured, sort order, deliverables, live URL, dan gallery sekarang disinkronkan penuh.',
-              ].map((item) => (
-                <div key={item} className="rounded-2xl bg-mn-surface px-5 py-4 text-sm font-bold text-mn-primary">
-                  {item}
-                </div>
-              ))}
-            </div>
+            <p className="text-sm font-bold text-mn-tertiary/60 mt-4">Platform settings coming soon.</p>
           </div>
         )}
       </main>

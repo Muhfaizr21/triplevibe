@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useSite } from './context/SiteContext';
+import SEO from './components/SEO';
 
 const WA_NUMBER = '6281234567890';
 const trackAndOpenWA = async (source = 'home') => {
@@ -12,8 +14,12 @@ const trackAndOpenWA = async (source = 'home') => {
   window.open(`https://wa.me/${WA_NUMBER}?text=Halo%20TripleVibe%2C%20saya%20ingin%20konsultasi%20project!`, '_blank');
 };
 
-const Hero = ({ onPageChange }) => (
-  <header className="relative min-h-screen flex items-center pt-24 overflow-hidden">
+const Hero = ({ onPageChange }) => {
+  const { settings } = useSite();
+  const formatText = (text) => text ? text.split('\\n').map((str, i) => <React.Fragment key={i}>{str}{i !== text.split('\\n').length - 1 && <br/>}</React.Fragment>) : null;
+
+  return (
+    <header className="relative min-h-screen flex items-center pt-24 overflow-hidden">
     <div className="max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       <div className="lg:col-span-7 z-10">
         <div className="inline-flex items-center gap-2 bg-mn-surface-container-high px-3 py-1 rounded-full mb-6">
@@ -21,10 +27,12 @@ const Hero = ({ onPageChange }) => (
           <span className="text-[10px] font-bold uppercase tracking-widest text-mn-primary">High-End Engineering Solution</span>
         </div>
         <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tighter text-mn-primary leading-[1.1] mb-8">
-          Solusi Software <br /> <span className="text-mn-on-primary-container">Engineering</span> Profesional.
+          {formatText(settings.home_hero_title) || (
+            <>Solusi Software <br /> <span className="text-mn-on-primary-container">Engineering</span> Profesional.</>
+          )}
         </h1>
-        <p className="text-lg text-mn-secondary max-w-xl leading-relaxed mb-10">
-          Kami menghadirkan keahlian teknis tingkat tinggi untuk membangun sistem yang skalabel, aman, dan efisien. Dari arsitektur hingga implementasi kode.
+        <p className="text-lg text-mn-secondary max-w-xl leading-relaxed mb-10 whitespace-pre-wrap">
+          {settings.home_hero_subtitle || 'Kami menghadirkan keahlian teknis tingkat tinggi untuk membangun sistem yang skalabel, aman, dan efisien. Dari arsitektur hingga implementasi kode.'}
         </p>
         <div className="flex flex-wrap gap-4">
           <button onClick={() => onPageChange('contact')} className="bg-mn-primary-container text-white px-10 py-4 rounded-xl font-bold shadow-2xl hover:bg-mn-primary transition-all">Mulai Konsultasi</button>
@@ -51,7 +59,8 @@ const Hero = ({ onPageChange }) => (
       </div>
     </div>
   </header>
-);
+  );
+};
 
 const Services = ({ onPageChange }) => (
   <section className="py-32 bg-mn-surface-container-low">
@@ -270,13 +279,23 @@ const Footer = ({ onPageChange }) => (
 );
 
 export default function Home({ onPageChange }) {
+  const { settings } = useSite();
+  const formatText = (text) => text ? text.split('\n').join(' ') : '';
+  
   return (
-    <div className="bg-mn-surface text-mn-on-surface selection:bg-mn-primary-container selection:text-white font-manrope">
-      <Hero onPageChange={onPageChange} />
-      <Services onPageChange={onPageChange} />
-      <CaseStudy />
-      <Testimonial />
-      <CTA onPageChange={onPageChange} />
+    <div className="bg-mn-surface text-mn-on-background font-manrope antialiased selection:bg-mn-primary-container selection:text-white transition-colors duration-500">
+      <SEO 
+        title={formatText(settings.home_hero_title) || "TripleVibe | Engineering Firm & Digital Architect"} 
+        description={formatText(settings.home_hero_subtitle)} 
+      />
+      
+      <main className="pb-24 overflow-hidden">
+        <Hero onPageChange={onPageChange} />
+        <Services onPageChange={onPageChange} />
+        <CaseStudy />
+        <Testimonial />
+        <CTA onPageChange={onPageChange} />
+      </main>
       <Footer onPageChange={onPageChange} />
     </div>
   );

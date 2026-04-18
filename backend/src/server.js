@@ -127,6 +127,32 @@ const initDB = async () => {
       );
     `);
 
+    // Site settings for CMS
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS site_settings (
+        id SERIAL PRIMARY KEY,
+        setting_key TEXT UNIQUE NOT NULL,
+        setting_value TEXT,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // Seed default site settings if empty
+    const { rows: settingsRows } = await pool.query('SELECT COUNT(*) FROM site_settings');
+    if (parseInt(settingsRows[0].count) === 0) {
+      const defaultSettings = [
+        ['home_hero_title', 'The Benchmark of Digital Excenllence.'],
+        ['home_hero_subtitle', 'Kami tidak sekadar menulis kode; kami merancang ekosistem digital performa tinggi untuk bisnis yang menuntut kualitas tanpa kompromi.'],
+        ['expertise_hero_title', 'Arsitektur Digital\\nTanpa Kompromi.'],
+        ['expertise_hero_subtitle', 'Kami membangun solusi perangkat lunak dengan presisi teknik sipil. Dari infrastruktur cloud hingga antarmuka mobile, setiap baris kode adalah fondasi masa depan bisnis Anda.'],
+        ['process_hero_title', 'Arsitektur Alur Kerja yang Presisi.'],
+        ['process_hero_subtitle', 'Kami tidak sekadar membangun kode; kami merancang ekosistem digital. Setiap langkah dalam proses kami diatur dengan ketelitian teknis untuk memastikan hasil akhir yang monumental dan tahan lama.']
+      ];
+      for (const [key, value] of defaultSettings) {
+        await pool.query('INSERT INTO site_settings (setting_key, setting_value) VALUES ($1, $2)', [key, value]);
+      }
+    }
+
     // Seed Super Admin if not exists
     const adminCheck = await pool.query('SELECT * FROM users WHERE email = $1', ['superadmin@triplevibe.com']);
     if (adminCheck.rows.length === 0) {
@@ -436,35 +462,65 @@ app.get('/api/analytics/stats', async (req, res) => {
 // ===========================================
 // MEDIA LIBRARY
 // ===========================================
+// --- Media Library Routes ---
 app.get('/api/media', async (req, res) => {
   try {
-    const files = fs.readdirSync(uploadsDir)
-      .filter(f => f !== '.gitkeep')
-      .map(filename => {
-        const stats = fs.statSync(path.join(uploadsDir, filename));
-        return {
-          filename,
-          url: `http://localhost:${PORT}/uploads/${filename}`,
-          size: stats.size,
-          created_at: stats.birthtime,
-        };
-      })
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    res.json(files);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const files = fs.readdirSync(uploadsDir);
+    const media = files.map(filename => {
+      const stats = fs.statSync(path.join(uploadsDir, filename));
+      return {
+        filename,
+        url: `http://localhost:${PORT}/uploads/${filename}`,
+        size: stats.size,
+        created_at: stats.mtime
+      };
+    }).filter(f => f.filename !== '.gitkeep')
+      .sort((a, b) => b.created_at - a.created_at);
+    res.json(media);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
 app.delete('/api/media/:filename', async (req, res) => {
-  const { filename } = req.params;
-  const filePath = path.join(uploadsDir, filename);
   try {
-    if (!fs.existsSync(filePath)) return res.status(404).json({ message: 'File not found' });
-    fs.unlinkSync(filePath);
-    res.json({ message: 'File deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const filename = req.params.filename;
+    if (filename === '.gitkeep') return res.status(403).json({ error: 'Cannot delete .gitkeep' });
+    const filepath = path.join(uploadsDir, filename);
+    if (fs.existsSync(filepath)) {
+      fs.unlinkSync(filepath);
+      res.json({ message: 'File deleted' });
+    } else {
+      res.status(404).json({ error: 'File not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// --- Site Settings CMS Routes ---
+app.get('/api/settings', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT setting_key, setting_value FROM site_settings');
+    const settings = rows.reduce((acc, row) => ({ ...acc, [row.setting_key]: row.setting_value }), {});
+    res.json(settings);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/settings', async (req, res) => {
+  try {
+    const settings = req.body; // e.g. { home_hero_title: '...', etc }
+    for (const [key, value] of Object.entries(settings)) {
+      await pool.query(
+        'INSERT INTO site_settings (setting_key, setting_value) VALUES ($1, $2) ON CONFLICT (setting_key) DO UPDATE SET setting_value = EXCLUDED.setting_value, updated_at = CURRENT_TIMESTAMP',
+        [key, value]
+      );
+    }
+    res.json({ message: 'Settings updated' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -487,6 +543,141 @@ app.get('/api/meta/project/:slug', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+});
+
+// ===========================================
+// SEO & BOT OPTIMIZATION (BLUEPRINT)
+// ===========================================
+
+// 1. REAL-TIME SITEMAP
+app.get('/api/public/sitemap.xml', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT slug, updated_at, created_at FROM projects WHERE status = $1 ORDER BY created_at DESC', ['published']);
+    
+    // Asumsikan URL frontend di production adalah ROOT_URL
+    const baseUrl = 'http://localhost:5173';
+    
+    let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${baseUrl}/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/expertise</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/process</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/projects</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>`;
+
+    rows.forEach((project) => {
+      const lastMod = new Date(project.updated_at || project.created_at).toISOString();
+      sitemap += `
+  <url>
+    <loc>${baseUrl}/projects/${project.slug}</loc>
+    <lastmod>${lastMod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    });
+
+    sitemap += '\n</urlset>';
+
+    res.header('Content-Type', 'application/xml');
+    res.send(sitemap);
+  } catch (err) {
+    res.status(500).send('Error generating sitemap');
+  }
+});
+
+// 2. BOT INTERCEPTION & DYNAMIC RENDERING 
+// (Middleware ini menangkap request dari crawler ketika Nginx proxy pass ke Node)
+app.use(async (req, res, next) => {
+  const userAgent = req.headers['user-agent'] || '';
+  const isBot = /googlebot|bingbot|yandex|baiduspider|twitterbot|facebookexternalhit|whatsapp|linkedinbot|slackbot|vkShare/i.test(userAgent);
+
+  if (!isBot || req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+    return next();
+  }
+
+  // Jika BOT dan mengakses halaman detail project (misal: /projects/slug-project)
+  if (req.path.startsWith('/projects/')) {
+    const slug = req.path.split('/')[2];
+    try {
+      const { rows } = await pool.query('SELECT * FROM projects WHERE slug = $1', [slug]);
+      if (rows.length > 0) {
+        const p = rows[0];
+        const publicUrl = `http://localhost:5173${req.path}`;
+        const imageUrl = p.image_url || `http://localhost:${PORT}/uploads/default.jpg`;
+        
+        const rawHTML = `<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>${p.title} | TripleVibe Project</title>
+    <meta name="description" content="${p.description}">
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="${publicUrl}">
+    <meta property="og:title" content="${p.title}">
+    <meta property="og:description" content="${p.description}">
+    <meta property="og:image" content="${imageUrl}">
+    <meta property="og:site_name" content="TripleVibe Portfolio">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${p.title}">
+    <meta name="twitter:description" content="${p.description}">
+    <meta name="twitter:image" content="${imageUrl}">
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "${p.title}",
+      "image": "${imageUrl}",
+      "description": "${p.description}",
+      "datePublished": "${p.published_at || p.created_at}",
+      "dateModified": "${p.updated_at || p.created_at}",
+      "author": { "@type": "Organization", "name": "TripleVibe" }
+    }
+    </script>
+</head>
+<body>
+    <h1>${p.title}</h1>
+    <p>${p.description}</p>
+    <img src="${imageUrl}" alt="${p.title}">
+</body>
+</html>`;
+        return res.send(rawHTML);
+      }
+    } catch (err) {
+      console.error('Bot intercept error:', err);
+    }
+  }
+
+  // Jika bot, tapi bukan halaman detail, kirim meta default Home.
+  const rawHTML = `<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>TripleVibe | Engineering Firm & Digital Architect</title>
+    <meta name="description" content="Membangun solusi arsitektur digital dengan pendekatan engineering profesional.">
+    <meta property="og:title" content="TripleVibe | Engineering Firm">
+    <meta property="og:description" content="Membangun solusi arsitektur digital dengan pendekatan engineering profesional.">
+</head>
+<body><h1>TripleVibe Engineering</h1></body>
+</html>`;
+  return res.send(rawHTML);
 });
 
 app.listen(PORT, () => {

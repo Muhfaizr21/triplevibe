@@ -1,24 +1,33 @@
 import React from 'react';
+import { useSite } from './context/SiteContext';
+import SEO from './components/SEO';
 
-const Hero = () => (
-  <section className="max-w-7xl mx-auto px-8 mb-32 flex flex-col md:flex-row gap-16 items-end pt-32">
-    <div className="md:w-3/5">
-      <span className="text-[0.75rem] font-bold uppercase tracking-[0.2em] text-mn-on-primary-container mb-4 block">Metodologi Kami</span>
-      <h1 className="text-[3.5rem] font-black leading-[1.1] tracking-tighter text-mn-primary mb-8">Arsitektur Alur Kerja yang Presisi.</h1>
-      <p className="text-lg text-mn-on-surface-variant leading-relaxed max-w-xl">
-        Kami tidak sekadar membangun kode; kami merancang ekosistem digital. Setiap langkah dalam proses kami diatur dengan ketelitian teknis untuk memastikan hasil akhir yang monumental dan tahan lama.
-      </p>
-    </div>
-    <div className="md:w-2/5 aspect-[4/3] bg-mn-surface-container-high rounded-xl overflow-hidden relative group">
-      <img 
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPIETNrlC5b3aQrQTxcxHwpWKQnI4X-mLd79TGoc0IIynPB1qV6qHRqHSrEDo_3EXLAh-rte5vg1XBcrSy4kKhia73PAw3MsXXBkWp46Ztc1t77DdqcCgn1qQ7DW0DhYbg51Aj4yWmtvEnMK-hPwC2Xv2h2bPF2spBtEPaeijv-frg0VUclQr68nQhcZUGkvxzb9nz-PGjYDmhrPajqgXK7dk0qXAJzPjaXdM2_VaWu3Ne8d0xyrFdiR-K9ffSzKaZLfjtimHqMGNy" 
-        alt="Architectural conceptualization" 
-        className="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-mn-primary/20 mix-blend-multiply"></div>
-    </div>
-  </section>
-);
+const Hero = () => {
+  const { settings } = useSite();
+  const formatText = (text) => text ? text.split('\\n').map((str, i) => <React.Fragment key={i}>{str}{i !== text.split('\\n').length - 1 && <br/>}</React.Fragment>) : null;
+
+  return (
+    <section className="max-w-7xl mx-auto px-8 mb-32 flex flex-col md:flex-row gap-16 items-end pt-32">
+      <div className="md:w-3/5">
+        <span className="text-[0.75rem] font-bold uppercase tracking-[0.2em] text-mn-on-primary-container mb-4 block">Metodologi Kami</span>
+        <h1 className="text-[3.5rem] font-black leading-[1.1] tracking-tighter text-mn-primary mb-8">
+          {formatText(settings.process_hero_title) || 'Arsitektur Alur Kerja yang Presisi.'}
+        </h1>
+        <p className="text-lg text-mn-on-surface-variant leading-relaxed max-w-xl whitespace-pre-wrap">
+          {settings.process_hero_subtitle || 'Kami tidak sekadar membangun kode; kami merancang ekosistem digital. Setiap langkah dalam proses kami diatur dengan ketelitian teknis untuk memastikan hasil akhir yang monumental dan tahan lama.'}
+        </p>
+      </div>
+      <div className="md:w-2/5 aspect-[4/3] bg-mn-surface-container-high rounded-xl overflow-hidden relative group">
+        <img 
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPIETNrlC5b3aQrQTxcxHwpWKQnI4X-mLd79TGoc0IIynPB1qV6qHRqHSrEDo_3EXLAh-rte5vg1XBcrSy4kKhia73PAw3MsXXBkWp46Ztc1t77DdqcCgn1qQ7DW0DhYbg51Aj4yWmtvEnMK-hPwC2Xv2h2bPF2spBtEPaeijv-frg0VUclQr68nQhcZUGkvxzb9nz-PGjYDmhrPajqgXK7dk0qXAJzPjaXdM2_VaWu3Ne8d0xyrFdiR-K9ffSzKaZLfjtimHqMGNy" 
+          alt="Architectural conceptualization" 
+          className="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-mn-primary/20 mix-blend-multiply"></div>
+      </div>
+    </section>
+  );
+};
 
 const ProcessStep = ({ number, icon, title, category, description, items, alignRight, borderSide }) => (
   <div className={`relative flex flex-col items-center gap-12 group ${alignRight ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
@@ -143,8 +152,15 @@ const Footer = () => (
 );
 
 export default function Process() {
+  const { settings } = useSite();
+  const formatText = (text) => text ? text.split('\\n').join(' ') : '';
+
   return (
     <div className="bg-mn-surface text-mn-on-background font-manrope">
+      <SEO 
+        title={formatText(settings.process_hero_title) || "Workflow Process | TripleVibe"}
+        description={formatText(settings.process_hero_subtitle) || "Arsitektur alur kerja kami yang presisi."}
+      />
       <main className="pb-24">
         <Hero />
         <ProcessDiagram />

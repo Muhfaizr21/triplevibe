@@ -9,14 +9,18 @@ import LoginForm from './components/auth/LoginForm';
 import SuperAdminDashboard from './pages/admin/Dashboard';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { SiteProvider } from './context/SiteContext';
+import { HelmetProvider } from 'react-helmet-async';
 
 const APP_PAGES = new Set(['home', 'expertise', 'projects', 'process', 'contact', 'login', 'superadmin']);
 
 function AppContent() {
   const [currentPage, setCurrentPage] = useState(() => {
-    const path = window.location.pathname.replace(/^\/|\/$/g, ''); // Ambil path dari URL ('projects', 'contact')
-    const validPage = path || 'home'; // Jika '/' maka jadi 'home'
-    return APP_PAGES.has(validPage) ? validPage : 'home';
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    const mainPage = pathSegments[0] || 'home';
+    
+    if (mainPage === 'superadmin') return 'superadmin';
+    return APP_PAGES.has(mainPage) ? mainPage : 'home';
   });
 
   const { user, isAdmin, loading } = useAuth();
@@ -31,16 +35,22 @@ function AppContent() {
 
   useEffect(() => {
     const path = resolvedPage === 'home' ? '/' : `/${resolvedPage}`;
-    if (window.location.pathname !== path) {
-      window.history.pushState(null, '', path);
+    
+    // Biarkan Dashboard.jsx yang mengurus sub-path jika di superadmin
+    if (resolvedPage !== 'superadmin') {
+      if (window.location.pathname !== path) {
+        window.history.pushState(null, '', path);
+      }
     }
+    
     localStorage.setItem('triplevibe_last_page', resolvedPage);
 
-    // Track page view
+    // Track page view - gunakan pathname asli jika di superadmin
+    const trackPath = resolvedPage === 'superadmin' ? window.location.pathname : path;
     fetch('http://localhost:5001/api/analytics/pageview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ page: path }),
+      body: JSON.stringify({ page: trackPath }),
     }).catch(() => {});
   }, [resolvedPage]);
 
@@ -84,11 +94,15 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider>
+        <SiteProvider>
+          <AuthProvider>
+            <AppContent />
+          </AuthProvider>
+        </SiteProvider>
+      </ThemeProvider>
+    </HelmetProvider>
   );
 }
 
