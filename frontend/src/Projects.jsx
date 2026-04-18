@@ -20,7 +20,8 @@ const ProjectModal = ({ project, onClose }) => {
 
   if (!project) return null;
 
-  const allImages = [project.image_url, ...(project.gallery || [])].filter(Boolean);
+  const rawImages = [project.image_url, ...(project.gallery || [])].filter(Boolean);
+  const allImages = rawImages.length > 0 ? Array.from(new Set(rawImages)) : [DEFAULT_PROJECT_IMAGE];
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % allImages.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + allImages.length) % allImages.length);
@@ -40,7 +41,7 @@ const ProjectModal = ({ project, onClose }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="h-64 md:h-96 lg:h-full relative overflow-hidden bg-mn-surface group">
             <img
-              src={allImages[currentSlide] || DEFAULT_PROJECT_IMAGE}
+              src={allImages[currentSlide]}
               alt={project.title}
               className="w-full h-full object-cover transition-all duration-700"
             />
@@ -186,25 +187,27 @@ export default function Projects() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
 
+  const API_URL = 'http://localhost:5001/api';
+
   useEffect(() => {
     const fetchProjects = async () => {
       setLoading(true);
       setError('');
 
-      const { data, error: queryError } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('status', 'published')
-        .order('featured', { ascending: false })
-        .order('sort_order', { ascending: true })
-        .order('published_at', { ascending: false })
-        .order('created_at', { ascending: false });
-
-      if (queryError) {
-        console.error('Error fetching projects:', queryError);
+      try {
+        const response = await fetch(`${API_URL}/projects`);
+        if (!response.ok) throw new Error('Gagal mengambil data project');
+        
+        const data = await response.json();
+        // Hanya tampilkan project yang statusnya published
+        const publishedProjects = (data || [])
+          .filter(project => project.status === 'published')
+          .map(mapProjectRow);
+          
+        setProjects(publishedProjects);
+      } catch (err) {
+        console.error('Error fetching projects:', err);
         setError('Project portfolio belum bisa dimuat.');
-      } else {
-        setProjects((data || []).map(mapProjectRow));
       }
 
       setLoading(false);

@@ -21,10 +21,13 @@ const Navbar = ({ currentPage, onPageChange }) => {
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full px-8 py-4 z-50 bg-mn-surface/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] flex justify-between items-center transition-all border border-white/10">
       <div 
-        className="text-2xl font-black tracking-tighter text-white uppercase cursor-pointer hover:opacity-80 transition-opacity italic"
+        className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
         onClick={() => onPageChange('home')}
       >
-        Triple<span className="text-mn-primary">Vibe</span>
+        <img src="/triple.jpg" alt="TripleVibe Logo" className="h-[2.5em] w-auto rounded-[0.8em] shadow-md shadow-black/10 border border-white/20 object-cover" />
+        <span className="text-[1.3rem] font-black tracking-tighter text-mn-primary uppercase italic hidden sm:block leading-none mt-1">
+          Triple<span className="text-mn-on-surface-variant">Vibe</span>
+        </span>
       </div>
       
       <div className="hidden md:flex items-center gap-10">

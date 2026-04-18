@@ -13,8 +13,9 @@ const APP_PAGES = new Set(['home', 'expertise', 'projects', 'process', 'contact'
 
 function AppContent() {
   const [currentPage, setCurrentPage] = useState(() => {
-    const savedPage = localStorage.getItem('triplevibe_last_page') || 'home';
-    return APP_PAGES.has(savedPage) ? savedPage : 'home';
+    const path = window.location.pathname.replace(/^\/|\/$/g, ''); // Ambil path dari URL ('projects', 'contact')
+    const validPage = path || 'home'; // Jika '/' maka jadi 'home'
+    return APP_PAGES.has(validPage) ? validPage : 'home';
   });
 
   const { user, isAdmin, loading } = useAuth();
@@ -28,8 +29,23 @@ function AppContent() {
           : currentPage;
 
   useEffect(() => {
+    const path = resolvedPage === 'home' ? '/' : `/${resolvedPage}`;
+    if (window.location.pathname !== path) {
+      window.history.pushState(null, '', path);
+    }
     localStorage.setItem('triplevibe_last_page', resolvedPage);
   }, [resolvedPage]);
+
+  // Handle ketika user tekan tombol Back/Forward di Browser
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.replace(/^\/|\/$/g, '');
+      const validPage = path || 'home';
+      setCurrentPage(APP_PAGES.has(validPage) ? validPage : 'home');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   if (loading) return null;
 

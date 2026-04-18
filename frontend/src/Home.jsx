@@ -90,9 +90,9 @@ const Services = ({ onPageChange }) => (
             alt="Software Engineering Pro"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-mn-primary via-mn-primary/80 to-transparent p-10 flex flex-col justify-center">
-            <h3 className="text-3xl font-bold text-white mb-4">Software Engineering Pro</h3>
-            <p className="text-slate-200 max-w-xs mb-8">Delegasikan kerumitan teknis Anda kepada tim ahli kami. Hasil presisi, waktu tepat.</p>
-            <button onClick={() => onPageChange('contact')} className="bg-white text-mn-primary w-fit px-8 py-3 rounded-full font-bold text-sm">Hubungi Ahli</button>
+            <h3 className="text-3xl font-bold text-white mb-4">TripleVibe Pro</h3>
+            <p className="text-slate-200 max-w-xs mb-8">Tingkatkan skala bisnis Anda bersama tim engineer ahli kami. Inovasi tiada henti dengan hasil presisi tinggi.</p>
+            <button onClick={() => onPageChange('contact')} className="bg-white text-mn-primary w-fit px-8 py-3 rounded-full font-bold text-sm">Join The Vibe</button>
           </div>
         </div>
       </div>
@@ -144,7 +144,7 @@ const Testimonial = () => (
     <div className="max-w-4xl mx-auto px-8 text-center">
       <span className="material-symbols-outlined text-6xl text-mn-outline-variant/40 mb-8" style={{ fontVariationSettings: "'FILL' 1" }}>format_quote</span>
       <blockquote className="text-3xl md:text-4xl font-light italic text-mn-primary dark:text-white leading-tight mb-12">
-        "Bantuan dari DevMonolith benar-benar di luar ekspektasi. Sebagai mahasiswa IT, saya belajar banyak tentang bagaimana kode produksi yang sebenarnya ditulis. Hasil project skripsi saya mendapatkan pujian tertinggi."
+        "Kerja sama dengan TripleVibe benar-benar luar biasa. Arsitektur sistem e-commerce kami menjadi jauh lebih modern, cepat, dan stabil. Mereka benar-benar membawa 'vibe' baru ke dalam tim teknis kami!"
       </blockquote>
       <div className="flex items-center justify-center gap-4">
         <div className="w-12 h-12 rounded-full overflow-hidden">
@@ -188,9 +188,11 @@ const Footer = ({ onPageChange }) => (
     <div className="max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
         <div className="max-w-xs">
-          <div className="text-2xl font-bold text-[#001F3F] dark:text-white mb-6">DevMonolith</div>
+          <div className="text-3xl font-black italic tracking-tighter text-[#001F3F] dark:text-white mb-6 uppercase">
+            Triple<span className="text-mn-on-surface-variant">Vibe</span>
+          </div>
           <p className="font-manrope text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-            Partner strategis untuk pengembangan perangkat lunak berkualitas tinggi dengan standar arsitektur industri.
+            Partner strategis pengembangan aplikasi dagang dan solusi digital untuk membawa bisnis Anda ke level berikutnya.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
@@ -220,7 +222,7 @@ const Footer = ({ onPageChange }) => (
         </div>
       </div>
       <div className="pt-8 border-t border-mn-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="font-manrope text-sm text-slate-500 dark:text-slate-400">© 2024 DevMonolith Engineering. All rights reserved.</p>
+        <p className="font-manrope text-sm text-slate-500 dark:text-slate-400">© 2024 TripleVibe Studios. All rights reserved.</p>
         <div className="flex gap-6">
           <span className="material-symbols-outlined text-slate-400 cursor-pointer hover:text-mn-primary transition-colors">language</span>
           <span className="material-symbols-outlined text-slate-400 cursor-pointer hover:text-mn-primary transition-colors">share</span>

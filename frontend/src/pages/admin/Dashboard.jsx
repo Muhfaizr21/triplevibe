@@ -23,38 +23,39 @@ const Dashboard = () => {
   const [search, setSearch] = useState('');
   const { profile } = useAuth();
 
+  const API_URL = 'http://localhost:5001/api';
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       setLoading(true);
 
-      const [{ data: projectRows, error: projectError }, { data: profileRows, error: profileError }] = await Promise.all([
-        supabase
-          .from('projects')
-          .select('*')
-          .order('featured', { ascending: false })
-          .order('sort_order', { ascending: true })
-          .order('updated_at', { ascending: false }),
-        supabase
-          .from('profiles')
-          .select('id, first_name, last_name, email, role, created_at')
-          .order('created_at', { ascending: false }),
-      ]);
+      try {
+        const [projectsRes, profilesRes] = await Promise.all([
+          fetch(`${API_URL}/projects`),
+          fetch(`${API_URL}/profiles`),
+        ]);
 
-      if (projectError) console.error('Error fetching projects:', projectError);
-      if (profileError) console.error('Error fetching profiles:', profileError);
+        if (!projectsRes.ok || !profilesRes.ok) throw new Error('Gagal mengambil data sistem');
 
-      setProjects((projectRows || []).map(mapProjectRow));
-      setProfiles(profileRows || []);
-      setLoading(false);
+        const projectRows = await projectsRes.json();
+        const profileRows = await profilesRes.json();
+
+        setProjects((projectRows || []).map(mapProjectRow));
+        setProfiles(profileRows || []);
+      } catch (error) {
+        console.error('Dashboard sync error:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchDashboardData();
   }, [activeTab]);
 
   const stats = useMemo(() => {
-    const published = projects.filter((item) => item.status === 'published').length;
-    const drafts = projects.filter((item) => item.status === 'draft').length;
-    const archived = projects.filter((item) => item.status === 'archived').length;
+    const published = projects.filter((item) => item.status?.toLowerCase() === 'published').length;
+    const drafts = projects.filter((item) => item.status?.toLowerCase() === 'draft').length;
+    const archived = projects.filter((item) => item.status?.toLowerCase() === 'archived').length;
     const categories = new Set(projects.map((item) => item.category).filter(Boolean)).size;
 
     return [

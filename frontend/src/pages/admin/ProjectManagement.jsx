@@ -42,22 +42,19 @@ const ProjectManagement = () => {
   const [feedback, setFeedback] = useState({ type: '', message: '' });
   const [formData, setFormData] = useState(EMPTY_FORM);
 
+  const API_URL = 'http://localhost:5001/api';
+
   const fetchProjects = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .order('featured', { ascending: false })
-      .order('sort_order', { ascending: true })
-      .order('updated_at', { ascending: false });
-
-    if (error) {
+    try {
+      const response = await fetch(`${API_URL}/projects`);
+      if (!response.ok) throw new Error('Gagal mengambil data');
+      const data = await response.json();
+      setProjects((data || []).map(mapProjectRow));
+    } catch (error) {
       console.error('Error fetching projects:', error);
       setFeedback({ type: 'error', message: 'Daftar project gagal dimuat.' });
-    } else {
-      setProjects((data || []).map(mapProjectRow));
     }
-
     setLoading(false);
   };
 
@@ -90,55 +87,33 @@ const ProjectManagement = () => {
     }));
   };
 
-  const removeStorageObjects = async (urls) => {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const paths = urls
-      .map((url) => extractStoragePath(url, supabaseUrl))
-      .filter(Boolean);
-
-    if (paths.length === 0) return;
-
-    const { error } = await supabase.storage.from('project-images').remove(paths);
-    if (error) {
-      console.error('Error deleting storage objects:', error);
-    }
-  };
-
   const handleFileUpload = async (event, type = 'thumbnail') => {
     try {
       setUploading(true);
-      const files = Array.from(event.target.files || []);
-      if (files.length === 0) return;
+      const file = event.target.files[0];
+      if (!file) return;
 
-      const uploadedUrls = [];
-      for (const file of files) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+      const formData = new FormData();
+      formData.append('image', file);
 
-        const { error: uploadError } = await supabase.storage
-          .from('project-images')
-          .upload(fileName, file, { upsert: false });
+      const response = await fetch(`${API_URL}/upload`, {
+        method: 'POST',
+        body: formData,
+      });
 
-        if (uploadError) throw uploadError;
-
-        const { data } = supabase.storage
-          .from('project-images')
-          .getPublicUrl(fileName);
-
-        uploadedUrls.push(data.publicUrl);
-      }
+      if (!response.ok) throw new Error('Gagal mengunggah gambar');
+      const data = await response.json();
 
       setFormData((current) => ({
         ...current,
-        image_url: type === 'thumbnail' ? uploadedUrls[0] : current.image_url,
-        gallery: type === 'gallery' ? [...current.gallery, ...uploadedUrls] : current.gallery,
+        image_url: type === 'thumbnail' ? data.url : current.image_url,
+        gallery: type === 'gallery' ? [...current.gallery, data.url] : current.gallery,
       }));
 
-      setFeedback({ type: 'success', message: 'Gambar berhasil diunggah.' });
+      setFeedback({ type: 'success', message: 'Gambar berhasil diunggah dari lokal.' });
     } catch (error) {
       setFeedback({ type: 'error', message: `Upload gagal: ${error.message}` });
     } finally {
-      event.target.value = '';
       setUploading(false);
     }
   };
@@ -154,10 +129,6 @@ const ProjectManagement = () => {
     if (!formData.title.trim()) return 'Judul project wajib diisi.';
     if (!formData.category.trim()) return 'Kategori project wajib diisi.';
     if (!formData.description.trim()) return 'Deskripsi project wajib diisi.';
-    if (!slugifyProjectTitle(formData.slug || formData.title)) return 'Slug project belum valid.';
-    if (formData.live_url && !/^https?:\/\//.test(formData.live_url.trim())) {
-      return 'Live URL harus diawali http:// atau https://.';
-    }
     return '';
   };
 
@@ -173,35 +144,29 @@ const ProjectManagement = () => {
     setSaving(true);
     const projectData = normalizeProjectPayload(formData, editingProject);
 
-    let error;
-    if (editingProject) {
-      const { error: updateError } = await supabase
-        .from('projects')
-        .update(projectData)
-        .eq('id', editingProject.id);
-      error = updateError;
-    } else {
-      const { error: insertError } = await supabase
-        .from('projects')
-        .insert([projectData]);
-      error = insertError;
-    }
+    try {
+      const url = editingProject 
+        ? `${API_URL}/projects/${editingProject.id}`
+        : `${API_URL}/projects`;
+      
+      const method = editingProject ? 'PUT' : 'POST';
 
-    if (error) {
-      setFeedback({ type: 'error', message: `Project gagal disimpan: ${error.message}` });
-    } else {
-      if (editingProject) {
-        const removedAssets = [
-          editingProject.image_url !== projectData.image_url ? editingProject.image_url : null,
-          ...(editingProject.gallery || []).filter((url) => !projectData.gallery.includes(url)),
-        ].filter(Boolean);
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(projectData),
+      });
 
-        await removeStorageObjects(removedAssets);
-      }
+      if (!response.ok) throw new Error('Gagal menyimpan project');
 
-      setFeedback({ type: 'success', message: editingProject ? 'Project berhasil diperbarui.' : 'Project berhasil dibuat.' });
+      setFeedback({ 
+        type: 'success', 
+        message: editingProject ? 'Project berhasil diperbarui.' : 'Project berhasil dibuat.' 
+      });
       closeModal();
       await fetchProjects();
+    } catch (error) {
+      setFeedback({ type: 'error', message: `Project gagal disimpan: ${error.message}` });
     }
 
     setSaving(false);
@@ -210,15 +175,18 @@ const ProjectManagement = () => {
   const handleDelete = async (project) => {
     if (!window.confirm(`Hapus project "${project.title}"?`)) return;
 
-    const { error } = await supabase.from('projects').delete().eq('id', project.id);
-    if (error) {
-      setFeedback({ type: 'error', message: `Project gagal dihapus: ${error.message}` });
-      return;
-    }
+    try {
+      const response = await fetch(`${API_URL}/projects/${project.id}`, {
+        method: 'DELETE',
+      });
 
-    await removeStorageObjects([project.image_url, ...(project.gallery || [])]);
-    setFeedback({ type: 'success', message: 'Project berhasil dihapus.' });
-    await fetchProjects();
+      if (!response.ok) throw new Error('Gagal menghapus project');
+
+      setFeedback({ type: 'success', message: 'Project berhasil dihapus.' });
+      await fetchProjects();
+    } catch (error) {
+      setFeedback({ type: 'error', message: `Project gagal dihapus: ${error.message}` });
+    }
   };
 
   const openNewModal = () => {

@@ -1,84 +1,60 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase/client';
 
 const AuthContext = createContext({});
 
+const API_URL = 'http://localhost:5001/api';
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProfile = useCallback(async (uid) => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', uid)
-        .single();
-
-      if (error) throw error;
-
-      setProfile(data);
-      return data;
-    } catch (error) {
-      console.error('Error fetching profile:', error.message);
-      setProfile(null);
-      return null;
+  // Sync session from localStorage
+  useEffect(() => {
+    const savedUser = localStorage.getItem('triplevibe_user');
+    const token = localStorage.getItem('triplevibe_token');
+    
+    if (savedUser && token) {
+      setUser(JSON.parse(savedUser));
     }
+    setLoading(false);
   }, []);
 
-  const syncSession = useCallback(async (session) => {
-    if (!session?.user) {
-      setUser(null);
-      setProfile(null);
-      return;
-    }
-
-    setUser(session.user);
-    await fetchProfile(session.user.id);
-  }, [fetchProfile]);
-
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      await syncSession(session);
-      setLoading(false);
-    });
-
-    const initSession = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        await syncSession(session);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initSession();
-
-    return () => subscription.unsubscribe();
-  }, [syncSession]);
-
   const signIn = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return { data, error };
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const nextProfile = data.user ? await fetchProfile(data.user.id) : null;
-    return { data: { ...data, profile: nextProfile }, error: null };
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { data: null, error: { message: data.message || 'Login failed' } };
+      }
+
+      setUser(data.user);
+      localStorage.setItem('triplevibe_user', JSON.stringify(data.user));
+      localStorage.setItem('triplevibe_token', data.token);
+
+      return { data: { user: data.user, profile: data.user }, error: null };
+    } catch (error) {
+      return { data: null, error: { message: error.message } };
+    }
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
     setUser(null);
-    setProfile(null);
-    return { error };
+    localStorage.removeItem('triplevibe_user');
+    localStorage.removeItem('triplevibe_token');
+    return { error: null };
   };
 
-  const userRole = profile?.role || user?.user_metadata?.role || 'user';
+  const userRole = user?.role || 'user';
 
   const value = {
     user,
-    profile,
+    profile: user,
     loading,
     signIn,
     signOut,
